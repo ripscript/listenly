@@ -1,0 +1,45 @@
+.PHONY: proto migrate-up migrate-down migrate-create run-gateway run-auth
+
+# ── Proto ──────────────────────────────
+proto:
+	cd proto && buf lint && buf generate
+
+proto-breaking:
+	cd proto && buf breaking --against '.git#branch=main'
+
+# ── Migration ──────────────────────────
+DB_URL=postgres://postgres:postgres@localhost:54322/listenly?sslmode=disable
+
+migrate-create:
+	@read -p "Migration name: " name; \
+	migrate create -ext sql -dir migrations -seq $$name
+
+migrate-up:
+	migrate -path migrations -database "$(DB_URL)" up
+
+migrate-down:
+	migrate -path migrations -database "$(DB_URL)" down 1
+
+migrate-force:
+	@read -p "Version: " version; \
+	migrate -path migrations -database "$(DB_URL)" force $$version
+
+# ── Run Services ───────────────────────
+run-gateway:
+	go run ./cmd/gateway
+
+run-auth:
+	go run ./cmd/auth-service
+
+run-room:
+	go run ./cmd/room-service
+
+run-music:
+	go run ./cmd/music-service
+
+# ── Dev ────────────────────────────────
+tidy:
+	go mod tidy
+
+test:
+	go test ./... -v

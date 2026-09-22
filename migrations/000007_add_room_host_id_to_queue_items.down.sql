@@ -1,0 +1,1 @@
+ALTER TABLE queue_items DROP COLUMN room_host_id;

@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package media.v1;
+
+option go_package = "listenly-backend/gen/go/media/v1;mediav1";
+
+import "common/v1/common.proto";
+
+service MediaService {
+  rpc GetMediaInfo(GetMediaInfoRequest) returns (GetMediaInfoResponse);
+  rpc GetStreamUrl(GetStreamUrlRequest) returns (GetStreamUrlResponse);
+}
+
+message GetMediaInfoRequest {
+  common.v1.RequestMeta meta = 1;
+  string youtube_url = 2; // bisa full URL atau video ID
+}
+
+message GetMediaInfoResponse {
+  string video_id = 1;
+  string title = 2;
+  string channel = 3;
+  int32 duration_seconds = 4;
+  string thumbnail_url = 5;
+}
+
+message GetStreamUrlRequest {
+  common.v1.RequestMeta meta = 1;
+  string video_id = 2;
+  AudioQuality quality = 3;
+}
+
+message GetStreamUrlResponse {
+  string stream_url = 1;
+  string expires_at = 2; // ISO 8601, informational — client TETAP harus minta ulang tiap butuh
+}
+
+enum AudioQuality {
+  AUDIO_QUALITY_UNSPECIFIED = 0;
+  AUDIO_QUALITY_LOW = 1;    // 128kbps
+  AUDIO_QUALITY_MEDIUM = 2; // 192kbps
+  AUDIO_QUALITY_HIGH = 3;   // 320kbps
+}

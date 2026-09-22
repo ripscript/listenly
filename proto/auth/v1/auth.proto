@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package auth.v1;
+
+option go_package = "listenly-backend/gen/go/auth/v1;authv1";
+
+import "common/v1/common.proto";
+
+service AuthService {
+  rpc Register(RegisterRequest) returns (AuthResponse);
+  rpc Login(LoginRequest) returns (AuthResponse);
+  rpc Refresh(RefreshRequest) returns (AuthResponse);
+  rpc Logout(LogoutRequest) returns (LogoutResponse);
+  rpc VerifyToken(VerifyTokenRequest) returns (VerifyTokenResponse);
+  rpc GetUserByUUID(GetUserByUUIDRequest) returns (GetUserByUUIDResponse);
+  rpc GetUserByID(GetUserByIDRequest) returns (GetUserByUUIDResponse);
+}
+
+message RegisterRequest {
+  common.v1.RequestMeta meta = 1;
+  string email = 2;
+  string password = 3;
+  optional string full_name = 4;
+}
+
+message LoginRequest {
+  common.v1.RequestMeta meta = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message RefreshRequest {
+  common.v1.RequestMeta meta = 1;
+  string refresh_token = 2;
+}
+
+message LogoutRequest {
+  common.v1.RequestMeta meta = 1;
+  string refresh_token = 2;
+}
+
+message LogoutResponse {
+  bool success = 1;
+}
+
+message VerifyTokenRequest {
+  common.v1.RequestMeta meta = 1;
+  string access_token = 2;
+}
+
+message VerifyTokenResponse {
+  bool valid = 1;
+  string user_uuid = 2;
+  string email = 3;
+}
+
+message AuthResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+  UserSummary user = 3;
+}
+
+message UserSummary {
+  string uuid = 1;
+  string email = 2;
+  optional string full_name = 3;
+}
+
+message GetUserByUUIDRequest {
+  common.v1.RequestMeta meta = 1;
+  string uuid = 2;
+}
+
+message GetUserByUUIDResponse {
+  int64 id = 1;
+  string uuid = 2;
+  string email = 3;
+}
+
+message GetUserByIDRequest {
+  common.v1.RequestMeta meta = 1;
+  int64 id = 2;
+}

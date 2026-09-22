@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package common.v1;
+
+option go_package = "listenly-backend/gen/go/common/v1;commonv1";
+
+import "google/protobuf/timestamp.proto";
+
+message RequestMeta {
+  string correlation_id = 1;
+  string request_id = 2;
+  google.protobuf.Timestamp requested_at = 3;
+}
+
+message Error {
+  string code = 1;
+  string message = 2;
+}

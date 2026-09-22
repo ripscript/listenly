@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+package music.v1;
+
+option go_package = "listenly-backend/gen/go/music/v1;musicv1";
+
+import "common/v1/common.proto";
+
+service MusicService {
+  rpc SearchTracks(SearchTracksRequest) returns (SearchTracksResponse);
+  rpc GetTrack(GetTrackRequest) returns (TrackResponse);
+  rpc RequestTrack(RequestTrackRequest) returns (QueueItemResponse);
+  rpc GetQueue(GetQueueRequest) returns (GetQueueResponse);
+  rpc RemoveFromQueue(RemoveFromQueueRequest) returns (RemoveFromQueueResponse);
+  rpc MarkAsPlayed(MarkAsPlayedRequest) returns (MarkAsPlayedResponse);
+}
+
+message SearchTracksRequest {
+  common.v1.RequestMeta meta = 1;
+  string query = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+
+message SearchTracksResponse {
+  repeated TrackResponse tracks = 1;
+  int32 total_items = 2;
+}
+
+message GetTrackRequest {
+  common.v1.RequestMeta meta = 1;
+  string track_uuid = 2;
+}
+
+message TrackResponse {
+  string uuid = 1;
+  string youtube_video_id = 2;
+  string title = 3;
+  string artist = 4;
+  int32 duration_seconds = 5;
+  string thumbnail_url = 6;
+}
+
+message RequestTrackRequest {
+  common.v1.RequestMeta meta = 1;
+  string room_uuid = 2;
+  string requested_by_uuid = 3;
+  string youtube_video_id = 4; // dipakai kalau track belum pernah ada di sistem
+}
+
+message QueueItemResponse {
+  string uuid = 1;
+  TrackResponse track = 2;
+  string requested_by_uuid = 3;
+  string status = 4; // pending / ready / failed / played
+  int32 position = 5;
+  string created_at = 6;
+}
+
+message GetQueueRequest {
+  common.v1.RequestMeta meta = 1;
+  string room_uuid = 2;
+  string requester_uuid = 3;
+}
+
+message GetQueueResponse {
+  repeated QueueItemResponse items = 1;
+}
+
+message RemoveFromQueueRequest {
+  common.v1.RequestMeta meta = 1;
+  string queue_item_uuid = 2;
+  string requester_uuid = 3;
+}
+
+message RemoveFromQueueResponse {
+  bool success = 1;
+}
+
+message MarkAsPlayedRequest {
+  common.v1.RequestMeta meta = 1;
+  string queue_item_uuid = 2;
+}
+
+message MarkAsPlayedResponse {
+  bool success = 1;
+}

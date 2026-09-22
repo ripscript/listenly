@@ -1,0 +1,118 @@
+syntax = "proto3";
+
+package room.v1;
+
+option go_package = "listenly-backend/gen/go/room/v1;roomv1";
+
+import "common/v1/common.proto";
+
+service RoomService {
+  rpc CreateRoom(CreateRoomRequest) returns (RoomResponse);
+  rpc GetRoom(GetRoomRequest) returns (RoomResponse);
+  rpc JoinRoom(JoinRoomRequest) returns (RoomResponse);
+  rpc JoinRoomByCode(JoinRoomByCodeRequest) returns (RoomResponse);
+  rpc JoinRoomByToken(JoinRoomByTokenRequest) returns (RoomResponse);
+  rpc LeaveRoom(LeaveRoomRequest) returns (LeaveRoomResponse);
+  rpc ListPublicRooms(ListPublicRoomsRequest) returns (ListPublicRoomsResponse);
+  rpc ListMyRooms(ListMyRoomsRequest) returns (ListPublicRoomsResponse);
+  rpc GetRoomInternal(GetRoomInternalRequest) returns (RoomInternalResponse);
+  rpc CheckMembership(CheckMembershipRequest) returns (CheckMembershipResponse);
+}
+
+enum RoomVisibility {
+  ROOM_VISIBILITY_UNSPECIFIED = 0;
+  ROOM_VISIBILITY_PUBLIC = 1;
+  ROOM_VISIBILITY_PRIVATE = 2;
+}
+
+message CreateRoomRequest {
+  common.v1.RequestMeta meta = 1;
+  string host_uuid = 2;
+  string name = 3;
+  RoomVisibility visibility = 4;
+}
+
+message GetRoomRequest {
+  common.v1.RequestMeta meta = 1;
+  string room_uuid = 2;
+  string requester_uuid = 3;
+}
+
+message JoinRoomByCodeRequest {
+  common.v1.RequestMeta meta = 1;
+  string user_uuid = 2;
+  string invite_code = 3;
+}
+
+message JoinRoomByTokenRequest {
+  common.v1.RequestMeta meta = 1;
+  string user_uuid = 2;
+  string invite_token = 3;
+}
+
+message LeaveRoomRequest {
+  common.v1.RequestMeta meta = 1;
+  string room_uuid = 2;
+  string user_uuid = 3;
+}
+
+message LeaveRoomResponse {
+  bool success = 1;
+}
+
+message ListPublicRoomsRequest {
+  common.v1.RequestMeta meta = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message ListPublicRoomsResponse {
+  repeated RoomResponse rooms = 1;
+  int32 total_items = 2;
+}
+
+message RoomResponse {
+  string uuid = 1;
+  string name = 2;
+  RoomVisibility visibility = 3;
+  string host_uuid = 4;
+  optional string invite_code = 5;
+  optional string invite_token = 6;
+  int32 member_count = 7;
+  int32 online_count = 8;
+}
+
+message JoinRoomRequest {
+  common.v1.RequestMeta meta = 1;
+  string room_uuid = 2;
+  string user_uuid = 3;
+}
+
+message ListMyRoomsRequest {
+  common.v1.RequestMeta meta = 1;
+  string user_uuid = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+
+message GetRoomInternalRequest {
+  common.v1.RequestMeta meta = 1;
+  string room_uuid = 2;
+}
+
+message RoomInternalResponse {
+  int64 id = 1;
+  string uuid = 2;
+  int64 host_id = 3;
+}
+
+message CheckMembershipRequest {
+  common.v1.RequestMeta meta = 1;
+  string room_uuid = 2;
+  string user_uuid = 3;
+}
+
+message CheckMembershipResponse {
+  bool is_member = 1;
+  bool is_host = 2;
+}

@@ -1,0 +1,1 @@
+ALTER TABLE queue_items ADD COLUMN room_host_id BIGINT NOT NULL DEFAULT 0;
