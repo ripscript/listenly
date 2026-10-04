@@ -211,7 +211,14 @@ func (s *musicService) RemoveFromQueue(ctx context.Context, req dto.RemoveFromQu
 		return ErrNotAuthorized
 	}
 
-	return s.repo.DeleteQueueItem(ctx, item.ID)
+	if err := s.repo.DeleteQueueItem(ctx, item.ID); err != nil {
+		return err
+	}
+
+	if req.RoomUUID != "" {
+		s.publishQueueEvent(ctx, req.RoomUUID, "track_removed")
+	}
+	return nil
 }
 
 func (s *musicService) MarkAsPlayed(ctx context.Context, queueItemUUID string) error {

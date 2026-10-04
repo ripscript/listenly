@@ -74,6 +74,7 @@ message RemoveFromQueueRequest {
   common.v1.RequestMeta meta = 1;
   string queue_item_uuid = 2;
   string requester_uuid = 3;
+  string room_uuid = 4;
 }
 
 message RemoveFromQueueResponse {

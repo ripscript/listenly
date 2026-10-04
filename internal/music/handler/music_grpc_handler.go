@@ -94,6 +94,7 @@ func (h *MusicGRPCHandler) RemoveFromQueue(ctx context.Context, req *musicv1.Rem
 	err := h.service.RemoveFromQueue(ctx, dto.RemoveFromQueueRequest{
 		QueueItemUUID: req.GetQueueItemUuid(),
 		RequesterUUID: req.GetRequesterUuid(),
+		RoomUUID:      req.GetRoomUuid(),
 	})
 	if err != nil {
 		if errors.Is(err, service.ErrNotAuthorized) {

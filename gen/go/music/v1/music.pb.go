@@ -539,6 +539,7 @@ type RemoveFromQueueRequest struct {
 	Meta          *v1.RequestMeta        `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
 	QueueItemUuid string                 `protobuf:"bytes,2,opt,name=queue_item_uuid,json=queueItemUuid,proto3" json:"queue_item_uuid,omitempty"`
 	RequesterUuid string                 `protobuf:"bytes,3,opt,name=requester_uuid,json=requesterUuid,proto3" json:"requester_uuid,omitempty"`
+	RoomUuid      string                 `protobuf:"bytes,4,opt,name=room_uuid,json=roomUuid,proto3" json:"room_uuid,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -590,6 +591,13 @@ func (x *RemoveFromQueueRequest) GetQueueItemUuid() string {
 func (x *RemoveFromQueueRequest) GetRequesterUuid() string {
 	if x != nil {
 		return x.RequesterUuid
+	}
+	return ""
+}
+
+func (x *RemoveFromQueueRequest) GetRoomUuid() string {
+	if x != nil {
+		return x.RoomUuid
 	}
 	return ""
 }
@@ -1181,11 +1189,12 @@ const file_music_v1_music_proto_rawDesc = "" +
 	"\troom_uuid\x18\x02 \x01(\tR\broomUuid\x12%\n" +
 	"\x0erequester_uuid\x18\x03 \x01(\tR\rrequesterUuid\"E\n" +
 	"\x10GetQueueResponse\x121\n" +
-	"\x05items\x18\x01 \x03(\v2\x1b.music.v1.QueueItemResponseR\x05items\"\x93\x01\n" +
+	"\x05items\x18\x01 \x03(\v2\x1b.music.v1.QueueItemResponseR\x05items\"\xb0\x01\n" +
 	"\x16RemoveFromQueueRequest\x12*\n" +
 	"\x04meta\x18\x01 \x01(\v2\x16.common.v1.RequestMetaR\x04meta\x12&\n" +
 	"\x0fqueue_item_uuid\x18\x02 \x01(\tR\rqueueItemUuid\x12%\n" +
-	"\x0erequester_uuid\x18\x03 \x01(\tR\rrequesterUuid\"3\n" +
+	"\x0erequester_uuid\x18\x03 \x01(\tR\rrequesterUuid\x12\x1b\n" +
+	"\troom_uuid\x18\x04 \x01(\tR\broomUuid\"3\n" +
 	"\x17RemoveFromQueueResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\"i\n" +
 	"\x13MarkAsPlayedRequest\x12*\n" +

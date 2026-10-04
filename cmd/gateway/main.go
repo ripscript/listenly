@@ -99,7 +99,7 @@ func main() {
 	musicGroup.GET("/search", musicHandler.SearchTracks)
 	musicGroup.POST("/rooms/:roomUuid/queue", musicHandler.RequestTrack)
 	musicGroup.GET("/rooms/:roomUuid/queue", musicHandler.GetQueue)
-	musicGroup.DELETE("/queue/:uuid", musicHandler.RemoveFromQueue)
+	musicGroup.DELETE("/rooms/:roomUuid/queue/:uuid", musicHandler.RemoveFromQueue)
 	musicGroup.PATCH("/queue/:uuid/played", musicHandler.MarkAsPlayed)
 	musicGroup.GET("/tracks/:uuid", musicHandler.GetTrack)
 	musicGroup.GET("/tracks/:uuid/stream", musicHandler.GetStreamURL)

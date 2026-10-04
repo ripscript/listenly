@@ -97,12 +97,14 @@ func (h *MusicHandler) GetQueue(c *echo.Context) error {
 }
 
 func (h *MusicHandler) RemoveFromQueue(c *echo.Context) error {
+	roomUUID := c.Param("roomUuid")
 	queueItemUUID := c.Param("uuid")
 	requesterUUID := ctxutil.GetUserUUID(c)
 
 	_, err := h.musicClient.RemoveFromQueue(c.Request().Context(), &musicv1.RemoveFromQueueRequest{
 		QueueItemUuid: queueItemUUID,
 		RequesterUuid: requesterUUID,
+		RoomUuid:      roomUUID,
 	})
 	if err != nil {
 		st, _ := status.FromError(err)

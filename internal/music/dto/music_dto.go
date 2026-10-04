@@ -17,6 +17,7 @@ type RequestTrackRequest struct {
 type RemoveFromQueueRequest struct {
 	QueueItemUUID string
 	RequesterUUID string
+	RoomUUID      string
 }
 
 type TrackResponse struct {
