@@ -64,6 +64,16 @@ class RoomServiceStub:
                 request_serializer=room_dot_v1_dot_room__pb2.CheckMembershipRequest.SerializeToString,
                 response_deserializer=room_dot_v1_dot_room__pb2.CheckMembershipResponse.FromString,
                 _registered_method=True)
+        self.UpdatePlayback = channel.unary_unary(
+                '/room.v1.RoomService/UpdatePlayback',
+                request_serializer=room_dot_v1_dot_room__pb2.UpdatePlaybackRequest.SerializeToString,
+                response_deserializer=room_dot_v1_dot_room__pb2.PlaybackStateResponse.FromString,
+                _registered_method=True)
+        self.GetPlayback = channel.unary_unary(
+                '/room.v1.RoomService/GetPlayback',
+                request_serializer=room_dot_v1_dot_room__pb2.GetPlaybackRequest.SerializeToString,
+                response_deserializer=room_dot_v1_dot_room__pb2.PlaybackStateResponse.FromString,
+                _registered_method=True)
 
 
 class RoomServiceServicer:
@@ -129,6 +139,18 @@ class RoomServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def UpdatePlayback(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetPlayback(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_RoomServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -181,6 +203,16 @@ def add_RoomServiceServicer_to_server(servicer, server):
                     servicer.CheckMembership,
                     request_deserializer=room_dot_v1_dot_room__pb2.CheckMembershipRequest.FromString,
                     response_serializer=room_dot_v1_dot_room__pb2.CheckMembershipResponse.SerializeToString,
+            ),
+            'UpdatePlayback': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdatePlayback,
+                    request_deserializer=room_dot_v1_dot_room__pb2.UpdatePlaybackRequest.FromString,
+                    response_serializer=room_dot_v1_dot_room__pb2.PlaybackStateResponse.SerializeToString,
+            ),
+            'GetPlayback': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetPlayback,
+                    request_deserializer=room_dot_v1_dot_room__pb2.GetPlaybackRequest.FromString,
+                    response_serializer=room_dot_v1_dot_room__pb2.PlaybackStateResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -453,6 +485,60 @@ class RoomService:
             '/room.v1.RoomService/CheckMembership',
             room_dot_v1_dot_room__pb2.CheckMembershipRequest.SerializeToString,
             room_dot_v1_dot_room__pb2.CheckMembershipResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdatePlayback(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/room.v1.RoomService/UpdatePlayback',
+            room_dot_v1_dot_room__pb2.UpdatePlaybackRequest.SerializeToString,
+            room_dot_v1_dot_room__pb2.PlaybackStateResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetPlayback(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/room.v1.RoomService/GetPlayback',
+            room_dot_v1_dot_room__pb2.GetPlaybackRequest.SerializeToString,
+            room_dot_v1_dot_room__pb2.PlaybackStateResponse.FromString,
             options,
             channel_credentials,
             insecure,

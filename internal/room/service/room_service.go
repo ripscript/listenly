@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"math/big"
+	"time"
 
 	authv1 "listenly-backend/gen/go/auth/v1"
 	"listenly-backend/internal/room/dto"
@@ -32,6 +33,8 @@ type RoomService interface {
 	ListMyRooms(ctx context.Context, userUUID string, page, pageSize int) ([]dto.RoomResponse, int64, error)
 	GetRoomInternal(ctx context.Context, roomUUID string) (int64, int64, error)
 	CheckMembership(ctx context.Context, roomUUID, userUUID string) (isMember bool, isHost bool, err error)
+	UpdatePlayback(ctx context.Context, roomUUID, requesterUUID, currentTrackID string, positionSeconds int, isPlaying bool) (*PlaybackState, error)
+	GetPlayback(ctx context.Context, roomUUID, requesterUUID string) (*PlaybackState, error)
 }
 
 type roomService struct {
@@ -358,4 +361,69 @@ func (s *roomService) CheckMembership(ctx context.Context, roomUUID, userUUID st
 
 	isHost = room.HostID == userID
 	return isMember, isHost, nil
+}
+
+type PlaybackState struct {
+	CurrentTrackID  string
+	PositionSeconds int
+	IsPlaying       bool
+	UpdatedAt       string
+}
+
+func (s *roomService) UpdatePlayback(ctx context.Context, roomUUID, requesterUUID, currentTrackID string, positionSeconds int, isPlaying bool) (*PlaybackState, error) {
+	// hanya host yang boleh mengubah playback
+	isMember, isHost, err := s.CheckMembership(ctx, roomUUID, requesterUUID)
+	if err != nil {
+		return nil, err
+	}
+	if !isMember {
+		return nil, ErrNotAuthorized
+	}
+	if !isHost {
+		return nil, ErrNotAuthorized
+	}
+
+	state := repository.RoomState{
+		CurrentTrackID:  currentTrackID,
+		PositionSeconds: positionSeconds,
+		IsPlaying:       isPlaying,
+	}
+	if err := s.stateRepo.UpdateState(ctx, roomUUID, state); err != nil {
+		return nil, err
+	}
+
+	updated, err := s.stateRepo.GetState(ctx, roomUUID)
+	if err != nil {
+		return nil, err
+	}
+	return toPlaybackState(updated), nil
+}
+
+func (s *roomService) GetPlayback(ctx context.Context, roomUUID, requesterUUID string) (*PlaybackState, error) {
+	// member mana pun boleh membaca state
+	isMember, _, err := s.CheckMembership(ctx, roomUUID, requesterUUID)
+	if err != nil {
+		return nil, err
+	}
+	if !isMember {
+		return nil, ErrNotAuthorized
+	}
+
+	state, err := s.stateRepo.GetState(ctx, roomUUID)
+	if err != nil {
+		return nil, err
+	}
+	return toPlaybackState(state), nil
+}
+
+func toPlaybackState(s *repository.RoomState) *PlaybackState {
+	if s == nil {
+		return &PlaybackState{} // state belum pernah di-set
+	}
+	return &PlaybackState{
+		CurrentTrackID:  s.CurrentTrackID,
+		PositionSeconds: s.PositionSeconds,
+		IsPlaying:       s.IsPlaying,
+		UpdatedAt:       s.UpdatedAt.Format(time.RFC3339),
+	}
 }

@@ -29,6 +29,8 @@ const (
 	RoomService_ListMyRooms_FullMethodName     = "/room.v1.RoomService/ListMyRooms"
 	RoomService_GetRoomInternal_FullMethodName = "/room.v1.RoomService/GetRoomInternal"
 	RoomService_CheckMembership_FullMethodName = "/room.v1.RoomService/CheckMembership"
+	RoomService_UpdatePlayback_FullMethodName  = "/room.v1.RoomService/UpdatePlayback"
+	RoomService_GetPlayback_FullMethodName     = "/room.v1.RoomService/GetPlayback"
 )
 
 // RoomServiceClient is the client API for RoomService service.
@@ -45,6 +47,8 @@ type RoomServiceClient interface {
 	ListMyRooms(ctx context.Context, in *ListMyRoomsRequest, opts ...grpc.CallOption) (*ListPublicRoomsResponse, error)
 	GetRoomInternal(ctx context.Context, in *GetRoomInternalRequest, opts ...grpc.CallOption) (*RoomInternalResponse, error)
 	CheckMembership(ctx context.Context, in *CheckMembershipRequest, opts ...grpc.CallOption) (*CheckMembershipResponse, error)
+	UpdatePlayback(ctx context.Context, in *UpdatePlaybackRequest, opts ...grpc.CallOption) (*PlaybackStateResponse, error)
+	GetPlayback(ctx context.Context, in *GetPlaybackRequest, opts ...grpc.CallOption) (*PlaybackStateResponse, error)
 }
 
 type roomServiceClient struct {
@@ -155,6 +159,26 @@ func (c *roomServiceClient) CheckMembership(ctx context.Context, in *CheckMember
 	return out, nil
 }
 
+func (c *roomServiceClient) UpdatePlayback(ctx context.Context, in *UpdatePlaybackRequest, opts ...grpc.CallOption) (*PlaybackStateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PlaybackStateResponse)
+	err := c.cc.Invoke(ctx, RoomService_UpdatePlayback_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *roomServiceClient) GetPlayback(ctx context.Context, in *GetPlaybackRequest, opts ...grpc.CallOption) (*PlaybackStateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PlaybackStateResponse)
+	err := c.cc.Invoke(ctx, RoomService_GetPlayback_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RoomServiceServer is the server API for RoomService service.
 // All implementations must embed UnimplementedRoomServiceServer
 // for forward compatibility.
@@ -169,6 +193,8 @@ type RoomServiceServer interface {
 	ListMyRooms(context.Context, *ListMyRoomsRequest) (*ListPublicRoomsResponse, error)
 	GetRoomInternal(context.Context, *GetRoomInternalRequest) (*RoomInternalResponse, error)
 	CheckMembership(context.Context, *CheckMembershipRequest) (*CheckMembershipResponse, error)
+	UpdatePlayback(context.Context, *UpdatePlaybackRequest) (*PlaybackStateResponse, error)
+	GetPlayback(context.Context, *GetPlaybackRequest) (*PlaybackStateResponse, error)
 	mustEmbedUnimplementedRoomServiceServer()
 }
 
@@ -208,6 +234,12 @@ func (UnimplementedRoomServiceServer) GetRoomInternal(context.Context, *GetRoomI
 }
 func (UnimplementedRoomServiceServer) CheckMembership(context.Context, *CheckMembershipRequest) (*CheckMembershipResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CheckMembership not implemented")
+}
+func (UnimplementedRoomServiceServer) UpdatePlayback(context.Context, *UpdatePlaybackRequest) (*PlaybackStateResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdatePlayback not implemented")
+}
+func (UnimplementedRoomServiceServer) GetPlayback(context.Context, *GetPlaybackRequest) (*PlaybackStateResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetPlayback not implemented")
 }
 func (UnimplementedRoomServiceServer) mustEmbedUnimplementedRoomServiceServer() {}
 func (UnimplementedRoomServiceServer) testEmbeddedByValue()                     {}
@@ -410,6 +442,42 @@ func _RoomService_CheckMembership_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RoomService_UpdatePlayback_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdatePlaybackRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoomServiceServer).UpdatePlayback(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RoomService_UpdatePlayback_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoomServiceServer).UpdatePlayback(ctx, req.(*UpdatePlaybackRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RoomService_GetPlayback_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPlaybackRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoomServiceServer).GetPlayback(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RoomService_GetPlayback_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoomServiceServer).GetPlayback(ctx, req.(*GetPlaybackRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // RoomService_ServiceDesc is the grpc.ServiceDesc for RoomService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -456,6 +524,14 @@ var RoomService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CheckMembership",
 			Handler:    _RoomService_CheckMembership_Handler,
+		},
+		{
+			MethodName: "UpdatePlayback",
+			Handler:    _RoomService_UpdatePlayback_Handler,
+		},
+		{
+			MethodName: "GetPlayback",
+			Handler:    _RoomService_GetPlayback_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

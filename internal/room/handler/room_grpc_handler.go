@@ -176,3 +176,47 @@ func (h *RoomGRPCHandler) CheckMembership(ctx context.Context, req *roomv1.Check
 		IsHost:   isHost,
 	}, nil
 }
+
+func (h *RoomGRPCHandler) UpdatePlayback(ctx context.Context, req *roomv1.UpdatePlaybackRequest) (*roomv1.PlaybackStateResponse, error) {
+	state, err := h.service.UpdatePlayback(
+		ctx,
+		req.GetRoomUuid(),
+		req.GetRequesterUuid(),
+		req.GetCurrentTrackId(),
+		int(req.GetPositionSeconds()),
+		req.GetIsPlaying(),
+	)
+	if err != nil {
+		if errors.Is(err, service.ErrNotAuthorized) {
+			return nil, status.Error(codes.PermissionDenied, err.Error())
+		}
+		if errors.Is(err, service.ErrRoomNotFound) {
+			return nil, status.Error(codes.NotFound, err.Error())
+		}
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+	return toProtoPlaybackState(state), nil
+}
+
+func (h *RoomGRPCHandler) GetPlayback(ctx context.Context, req *roomv1.GetPlaybackRequest) (*roomv1.PlaybackStateResponse, error) {
+	state, err := h.service.GetPlayback(ctx, req.GetRoomUuid(), req.GetRequesterUuid())
+	if err != nil {
+		if errors.Is(err, service.ErrNotAuthorized) {
+			return nil, status.Error(codes.PermissionDenied, err.Error())
+		}
+		if errors.Is(err, service.ErrRoomNotFound) {
+			return nil, status.Error(codes.NotFound, err.Error())
+		}
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+	return toProtoPlaybackState(state), nil
+}
+
+func toProtoPlaybackState(s *service.PlaybackState) *roomv1.PlaybackStateResponse {
+	return &roomv1.PlaybackStateResponse{
+		CurrentTrackId:  s.CurrentTrackID,
+		PositionSeconds: int32(s.PositionSeconds),
+		IsPlaying:       s.IsPlaying,
+		UpdatedAt:       s.UpdatedAt,
+	}
+}

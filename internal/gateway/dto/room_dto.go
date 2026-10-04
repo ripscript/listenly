@@ -29,3 +29,16 @@ type JoinPrivateRoomHTTPRequest struct {
 	InviteCode  *string `json:"invite_code,omitempty"`
 	InviteToken *string `json:"invite_token,omitempty"`
 }
+
+type UpdatePlaybackHTTPRequest struct {
+	CurrentTrackID  string `json:"current_track_id"`
+	PositionSeconds int    `json:"position_seconds"`
+	IsPlaying       bool   `json:"is_playing"`
+}
+
+type PlaybackStateHTTPResponse struct {
+	CurrentTrackID  string `json:"current_track_id"`
+	PositionSeconds int    `json:"position_seconds"`
+	IsPlaying       bool   `json:"is_playing"`
+	UpdatedAt       string `json:"updated_at"`
+}

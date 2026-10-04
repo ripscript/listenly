@@ -1,1 +1,21 @@
+# Env files
 cmd/**/.env
+.env
+*.env
+!*.env.example
+
+# Python (media-service)
+media-service/venv/
+venv/
+__pycache__/
+*.pyc
+
+# Go
+*.exe
+*.test
+*.out
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/

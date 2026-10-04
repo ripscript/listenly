@@ -23,6 +23,7 @@ type AuthService interface {
 	Login(ctx context.Context, req dto.LoginRequest) (*dto.AuthResponse, error)
 	Refresh(ctx context.Context, req dto.RefreshRequest) (*dto.AuthResponse, error)
 	Logout(ctx context.Context, refreshToken string) error
+	LogoutAll(ctx context.Context, userUUID string) error
 	VerifyAccessToken(token string) (*jwt.Claims, error)
 	GetUserByUUID(ctx context.Context, userUUID string) (*models.User, error)
 	GetUserByID(ctx context.Context, id uint) (*models.User, error)
@@ -109,6 +110,17 @@ func (s *authService) Logout(ctx context.Context, refreshToken string) error {
 		return err
 	}
 	return s.repo.RevokeRefreshToken(ctx, stored.ID)
+}
+
+func (s *authService) LogoutAll(ctx context.Context, userUUID string) error {
+	user, err := s.repo.FindUserByUUID(ctx, userUUID)
+	if err != nil {
+		if errors.Is(err, repository.ErrNotFound) {
+			return nil // user tidak ada / sudah tidak punya sesi, anggap sukses (idempoten)
+		}
+		return err
+	}
+	return s.repo.RevokeAllUserRefreshTokens(ctx, user.ID)
 }
 
 func (s *authService) issueTokens(ctx context.Context, user *models.User) (*dto.AuthResponse, error) {

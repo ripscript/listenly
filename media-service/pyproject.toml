@@ -1,0 +1,25 @@
+[project]
+name = "listenly-media-service"
+version = "0.1.0"
+description = "Listenly media-service (gRPC + yt-dlp)"
+requires-python = ">=3.11"
+dependencies = [
+    "grpcio>=1.68.1",
+    "yt-dlp",
+    "protobuf>=7.36.2,<8.0",
+]
+
+[project.optional-dependencies]
+# dipakai hanya saat regenerate stub proto, tidak untuk runtime
+dev = ["grpcio-tools>=1.68.1"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+# akar paket adalah app/gen — di situlah media/, common/, auth/, dst berada
+package-dir = {"" = "app/gen"}
+
+[tool.setuptools.packages.find]
+where = ["app/gen"]

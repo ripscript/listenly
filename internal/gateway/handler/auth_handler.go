@@ -100,6 +100,20 @@ func (h *AuthHandler) Logout(c *echo.Context) error {
 	return response.Success(c, http.StatusOK, "User logged out successfully", result)
 }
 
+func (h *AuthHandler) LogoutAll(c *echo.Context) error {
+	userUUID := ctxutil.GetUserUUID(c)
+
+	result, err := h.authClient.LogoutAll(c.Request().Context(), &authv1.LogoutAllRequest{
+		UserUuid: userUUID,
+	})
+	if err != nil {
+		st, _ := status.FromError(err)
+		return response.Error(c, http.StatusInternalServerError, st.Message(), nil)
+	}
+
+	return response.Success(c, http.StatusOK, "logged out from all devices", result)
+}
+
 func (h *AuthHandler) Verify(c *echo.Context) error {
 	userUUID := ctxutil.GetUserUUID(c)
 	email := ctxutil.GetEmail(c)

@@ -11,6 +11,7 @@ service AuthService {
   rpc Login(LoginRequest) returns (AuthResponse);
   rpc Refresh(RefreshRequest) returns (AuthResponse);
   rpc Logout(LogoutRequest) returns (LogoutResponse);
+  rpc LogoutAll(LogoutAllRequest) returns (LogoutResponse);
   rpc VerifyToken(VerifyTokenRequest) returns (VerifyTokenResponse);
   rpc GetUserByUUID(GetUserByUUIDRequest) returns (GetUserByUUIDResponse);
   rpc GetUserByID(GetUserByIDRequest) returns (GetUserByUUIDResponse);
@@ -42,6 +43,12 @@ message LogoutRequest {
 message LogoutResponse {
   bool success = 1;
 }
+
+message LogoutAllRequest {
+  common.v1.RequestMeta meta = 1;
+  string user_uuid = 2;
+}
+
 
 message VerifyTokenRequest {
   common.v1.RequestMeta meta = 1;

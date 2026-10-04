@@ -25,7 +25,7 @@ _sym_db = _symbol_database.Default()
 from common.v1 import common_pb2 as common_dot_v1_dot_common__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12\x61uth/v1/auth.proto\x12\x07\x61uth.v1\x1a\x16\x63ommon/v1/common.proto\"\x9f\x01\n\x0fRegisterRequest\x12*\n\x04meta\x18\x01 \x01(\x0b\x32\x16.common.v1.RequestMetaR\x04meta\x12\x14\n\x05\x65mail\x18\x02 \x01(\tR\x05\x65mail\x12\x1a\n\x08password\x18\x03 \x01(\tR\x08password\x12 \n\tfull_name\x18\x04 \x01(\tH\x00R\x08\x66ullName\x88\x01\x01\x42\x0c\n\n_full_name\"l\n\x0cLoginRequest\x12*\n\x04meta\x18\x01 \x01(\x0b\x32\x16.common.v1.RequestMetaR\x04meta\x12\x14\n\x05\x65mail\x18\x02 \x01(\tR\x05\x65mail\x12\x1a\n\x08password\x18\x03 \x01(\tR\x08password\"a\n\x0eRefreshRequest\x12*\n\x04meta\x18\x01 \x01(\x0b\x32\x16.common.v1.RequestMetaR\x04meta\x12#\n\rrefresh_token\x18\x02 \x01(\tR\x0crefreshToken\"`\n\rLogoutRequest\x12*\n\x04meta\x18\x01 \x01(\x0b\x32\x16.common.v1.RequestMetaR\x04meta\x12#\n\rrefresh_token\x18\x02 \x01(\tR\x0crefreshToken\"*\n\x0eLogoutResponse\x12\x18\n\x07success\x18\x01 \x01(\x08R\x07success\"c\n\x12VerifyTokenRequest\x12*\n\x04meta\x18\x01 \x01(\x0b\x32\x16.common.v1.RequestMetaR\x04meta\x12!\n\x0c\x61\x63\x63\x65ss_token\x18\x02 \x01(\tR\x0b\x61\x63\x63\x65ssToken\"^\n\x13VerifyTokenResponse\x12\x14\n\x05valid\x18\x01 \x01(\x08R\x05valid\x12\x1b\n\tuser_uuid\x18\x02 \x01(\tR\x08userUuid\x12\x14\n\x05\x65mail\x18\x03 \x01(\tR\x05\x65mail\"\x80\x01\n\x0c\x41uthResponse\x12!\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\tR\x0b\x61\x63\x63\x65ssToken\x12#\n\rrefresh_token\x18\x02 \x01(\tR\x0crefreshToken\x12(\n\x04user\x18\x03 \x01(\x0b\x32\x14.auth.v1.UserSummaryR\x04user\"g\n\x0bUserSummary\x12\x12\n\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n\x05\x65mail\x18\x02 \x01(\tR\x05\x65mail\x12 \n\tfull_name\x18\x03 \x01(\tH\x00R\x08\x66ullName\x88\x01\x01\x42\x0c\n\n_full_name\"V\n\x14GetUserByUUIDRequest\x12*\n\x04meta\x18\x01 \x01(\x0b\x32\x16.common.v1.RequestMetaR\x04meta\x12\x12\n\x04uuid\x18\x02 \x01(\tR\x04uuid\"Q\n\x15GetUserByUUIDResponse\x12\x0e\n\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n\x04uuid\x18\x02 \x01(\tR\x04uuid\x12\x14\n\x05\x65mail\x18\x03 \x01(\tR\x05\x65mail\"P\n\x12GetUserByIDRequest\x12*\n\x04meta\x18\x01 \x01(\x0b\x32\x16.common.v1.RequestMetaR\x04meta\x12\x0e\n\x02id\x18\x02 \x01(\x03R\x02id2\xdd\x03\n\x0b\x41uthService\x12;\n\x08Register\x12\x18.auth.v1.RegisterRequest\x1a\x15.auth.v1.AuthResponse\x12\x35\n\x05Login\x12\x15.auth.v1.LoginRequest\x1a\x15.auth.v1.AuthResponse\x12\x39\n\x07Refresh\x12\x17.auth.v1.RefreshRequest\x1a\x15.auth.v1.AuthResponse\x12\x39\n\x06Logout\x12\x16.auth.v1.LogoutRequest\x1a\x17.auth.v1.LogoutResponse\x12H\n\x0bVerifyToken\x12\x1b.auth.v1.VerifyTokenRequest\x1a\x1c.auth.v1.VerifyTokenResponse\x12N\n\rGetUserByUUID\x12\x1d.auth.v1.GetUserByUUIDRequest\x1a\x1e.auth.v1.GetUserByUUIDResponse\x12J\n\x0bGetUserByID\x12\x1b.auth.v1.GetUserByIDRequest\x1a\x1e.auth.v1.GetUserByUUIDResponseB(Z&listenly-backend/gen/go/auth/v1;authv1b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12\x61uth/v1/auth.proto\x12\x07\x61uth.v1\x1a\x16\x63ommon/v1/common.proto\"\x9f\x01\n\x0fRegisterRequest\x12*\n\x04meta\x18\x01 \x01(\x0b\x32\x16.common.v1.RequestMetaR\x04meta\x12\x14\n\x05\x65mail\x18\x02 \x01(\tR\x05\x65mail\x12\x1a\n\x08password\x18\x03 \x01(\tR\x08password\x12 \n\tfull_name\x18\x04 \x01(\tH\x00R\x08\x66ullName\x88\x01\x01\x42\x0c\n\n_full_name\"l\n\x0cLoginRequest\x12*\n\x04meta\x18\x01 \x01(\x0b\x32\x16.common.v1.RequestMetaR\x04meta\x12\x14\n\x05\x65mail\x18\x02 \x01(\tR\x05\x65mail\x12\x1a\n\x08password\x18\x03 \x01(\tR\x08password\"a\n\x0eRefreshRequest\x12*\n\x04meta\x18\x01 \x01(\x0b\x32\x16.common.v1.RequestMetaR\x04meta\x12#\n\rrefresh_token\x18\x02 \x01(\tR\x0crefreshToken\"`\n\rLogoutRequest\x12*\n\x04meta\x18\x01 \x01(\x0b\x32\x16.common.v1.RequestMetaR\x04meta\x12#\n\rrefresh_token\x18\x02 \x01(\tR\x0crefreshToken\"*\n\x0eLogoutResponse\x12\x18\n\x07success\x18\x01 \x01(\x08R\x07success\"[\n\x10LogoutAllRequest\x12*\n\x04meta\x18\x01 \x01(\x0b\x32\x16.common.v1.RequestMetaR\x04meta\x12\x1b\n\tuser_uuid\x18\x02 \x01(\tR\x08userUuid\"c\n\x12VerifyTokenRequest\x12*\n\x04meta\x18\x01 \x01(\x0b\x32\x16.common.v1.RequestMetaR\x04meta\x12!\n\x0c\x61\x63\x63\x65ss_token\x18\x02 \x01(\tR\x0b\x61\x63\x63\x65ssToken\"^\n\x13VerifyTokenResponse\x12\x14\n\x05valid\x18\x01 \x01(\x08R\x05valid\x12\x1b\n\tuser_uuid\x18\x02 \x01(\tR\x08userUuid\x12\x14\n\x05\x65mail\x18\x03 \x01(\tR\x05\x65mail\"\x80\x01\n\x0c\x41uthResponse\x12!\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\tR\x0b\x61\x63\x63\x65ssToken\x12#\n\rrefresh_token\x18\x02 \x01(\tR\x0crefreshToken\x12(\n\x04user\x18\x03 \x01(\x0b\x32\x14.auth.v1.UserSummaryR\x04user\"g\n\x0bUserSummary\x12\x12\n\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n\x05\x65mail\x18\x02 \x01(\tR\x05\x65mail\x12 \n\tfull_name\x18\x03 \x01(\tH\x00R\x08\x66ullName\x88\x01\x01\x42\x0c\n\n_full_name\"V\n\x14GetUserByUUIDRequest\x12*\n\x04meta\x18\x01 \x01(\x0b\x32\x16.common.v1.RequestMetaR\x04meta\x12\x12\n\x04uuid\x18\x02 \x01(\tR\x04uuid\"Q\n\x15GetUserByUUIDResponse\x12\x0e\n\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n\x04uuid\x18\x02 \x01(\tR\x04uuid\x12\x14\n\x05\x65mail\x18\x03 \x01(\tR\x05\x65mail\"P\n\x12GetUserByIDRequest\x12*\n\x04meta\x18\x01 \x01(\x0b\x32\x16.common.v1.RequestMetaR\x04meta\x12\x0e\n\x02id\x18\x02 \x01(\x03R\x02id2\x9e\x04\n\x0b\x41uthService\x12;\n\x08Register\x12\x18.auth.v1.RegisterRequest\x1a\x15.auth.v1.AuthResponse\x12\x35\n\x05Login\x12\x15.auth.v1.LoginRequest\x1a\x15.auth.v1.AuthResponse\x12\x39\n\x07Refresh\x12\x17.auth.v1.RefreshRequest\x1a\x15.auth.v1.AuthResponse\x12\x39\n\x06Logout\x12\x16.auth.v1.LogoutRequest\x1a\x17.auth.v1.LogoutResponse\x12?\n\tLogoutAll\x12\x19.auth.v1.LogoutAllRequest\x1a\x17.auth.v1.LogoutResponse\x12H\n\x0bVerifyToken\x12\x1b.auth.v1.VerifyTokenRequest\x1a\x1c.auth.v1.VerifyTokenResponse\x12N\n\rGetUserByUUID\x12\x1d.auth.v1.GetUserByUUIDRequest\x1a\x1e.auth.v1.GetUserByUUIDResponse\x12J\n\x0bGetUserByID\x12\x1b.auth.v1.GetUserByIDRequest\x1a\x1e.auth.v1.GetUserByUUIDResponseB(Z&listenly-backend/gen/go/auth/v1;authv1b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -43,20 +43,22 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_LOGOUTREQUEST']._serialized_end=522
   _globals['_LOGOUTRESPONSE']._serialized_start=524
   _globals['_LOGOUTRESPONSE']._serialized_end=566
-  _globals['_VERIFYTOKENREQUEST']._serialized_start=568
-  _globals['_VERIFYTOKENREQUEST']._serialized_end=667
-  _globals['_VERIFYTOKENRESPONSE']._serialized_start=669
-  _globals['_VERIFYTOKENRESPONSE']._serialized_end=763
-  _globals['_AUTHRESPONSE']._serialized_start=766
-  _globals['_AUTHRESPONSE']._serialized_end=894
-  _globals['_USERSUMMARY']._serialized_start=896
-  _globals['_USERSUMMARY']._serialized_end=999
-  _globals['_GETUSERBYUUIDREQUEST']._serialized_start=1001
-  _globals['_GETUSERBYUUIDREQUEST']._serialized_end=1087
-  _globals['_GETUSERBYUUIDRESPONSE']._serialized_start=1089
-  _globals['_GETUSERBYUUIDRESPONSE']._serialized_end=1170
-  _globals['_GETUSERBYIDREQUEST']._serialized_start=1172
-  _globals['_GETUSERBYIDREQUEST']._serialized_end=1252
-  _globals['_AUTHSERVICE']._serialized_start=1255
-  _globals['_AUTHSERVICE']._serialized_end=1732
+  _globals['_LOGOUTALLREQUEST']._serialized_start=568
+  _globals['_LOGOUTALLREQUEST']._serialized_end=659
+  _globals['_VERIFYTOKENREQUEST']._serialized_start=661
+  _globals['_VERIFYTOKENREQUEST']._serialized_end=760
+  _globals['_VERIFYTOKENRESPONSE']._serialized_start=762
+  _globals['_VERIFYTOKENRESPONSE']._serialized_end=856
+  _globals['_AUTHRESPONSE']._serialized_start=859
+  _globals['_AUTHRESPONSE']._serialized_end=987
+  _globals['_USERSUMMARY']._serialized_start=989
+  _globals['_USERSUMMARY']._serialized_end=1092
+  _globals['_GETUSERBYUUIDREQUEST']._serialized_start=1094
+  _globals['_GETUSERBYUUIDREQUEST']._serialized_end=1180
+  _globals['_GETUSERBYUUIDRESPONSE']._serialized_start=1182
+  _globals['_GETUSERBYUUIDRESPONSE']._serialized_end=1263
+  _globals['_GETUSERBYIDREQUEST']._serialized_start=1265
+  _globals['_GETUSERBYIDREQUEST']._serialized_end=1345
+  _globals['_AUTHSERVICE']._serialized_start=1348
+  _globals['_AUTHSERVICE']._serialized_end=1890
 # @@protoc_insertion_point(module_scope)

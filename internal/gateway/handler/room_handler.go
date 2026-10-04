@@ -86,9 +86,11 @@ func (h *RoomHandler) LeaveRoom(c *echo.Context) error {
 }
 
 func (h *RoomHandler) ListPublicRooms(c *echo.Context) error {
+	page, pageSize := parsePagination(c)
+
 	result, err := h.roomClient.ListPublicRooms(c.Request().Context(), &roomv1.ListPublicRoomsRequest{
-		Page:     1,
-		PageSize: 20,
+		Page:     page,
+		PageSize: pageSize,
 	})
 	if err != nil {
 		st, _ := status.FromError(err)
@@ -184,10 +186,12 @@ func (h *RoomHandler) JoinPrivateRoom(c *echo.Context) error {
 func (h *RoomHandler) ListMyRooms(c *echo.Context) error {
 	userUUID := ctxutil.GetUserUUID(c)
 
+	page, pageSize := parsePagination(c)
+
 	result, err := h.roomClient.ListMyRooms(c.Request().Context(), &roomv1.ListMyRoomsRequest{
 		UserUuid: userUUID,
-		Page:     1,
-		PageSize: 20,
+		Page:     page,
+		PageSize: pageSize,
 	})
 	if err != nil {
 		st, _ := status.FromError(err)
@@ -203,4 +207,53 @@ func (h *RoomHandler) ListMyRooms(c *echo.Context) error {
 		Rooms:      rooms,
 		TotalItems: int(result.TotalItems),
 	})
+}
+
+func (h *RoomHandler) UpdatePlayback(c *echo.Context) error {
+	roomUUID := c.Param("uuid")
+	requesterUUID := ctxutil.GetUserUUID(c)
+
+	var req dto.UpdatePlaybackHTTPRequest
+	if err := c.Bind(&req); err != nil {
+		return response.Error(c, http.StatusBadRequest, "invalid request body", nil)
+	}
+
+	result, err := h.roomClient.UpdatePlayback(c.Request().Context(), &roomv1.UpdatePlaybackRequest{
+		RoomUuid:        roomUUID,
+		RequesterUuid:   requesterUUID,
+		CurrentTrackId:  req.CurrentTrackID,
+		PositionSeconds: int32(req.PositionSeconds),
+		IsPlaying:       req.IsPlaying,
+	})
+	if err != nil {
+		st, _ := status.FromError(err)
+		return response.Error(c, http.StatusForbidden, st.Message(), nil)
+	}
+
+	return response.Success(c, http.StatusOK, "playback updated", toPlaybackHTTPResponse(result))
+}
+
+func (h *RoomHandler) GetPlayback(c *echo.Context) error {
+	roomUUID := c.Param("uuid")
+	requesterUUID := ctxutil.GetUserUUID(c)
+
+	result, err := h.roomClient.GetPlayback(c.Request().Context(), &roomv1.GetPlaybackRequest{
+		RoomUuid:      roomUUID,
+		RequesterUuid: requesterUUID,
+	})
+	if err != nil {
+		st, _ := status.FromError(err)
+		return response.Error(c, http.StatusForbidden, st.Message(), nil)
+	}
+
+	return response.Success(c, http.StatusOK, "playback state", toPlaybackHTTPResponse(result))
+}
+
+func toPlaybackHTTPResponse(s *roomv1.PlaybackStateResponse) dto.PlaybackStateHTTPResponse {
+	return dto.PlaybackStateHTTPResponse{
+		CurrentTrackID:  s.CurrentTrackId,
+		PositionSeconds: int(s.PositionSeconds),
+		IsPlaying:       s.IsPlaying,
+		UpdatedAt:       s.UpdatedAt,
+	}
 }

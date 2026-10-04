@@ -26,10 +26,12 @@ func (h *MusicHandler) SearchTracks(c *echo.Context) error {
 		return response.Error(c, http.StatusBadRequest, "query parameter 'q' is required", nil)
 	}
 
+	page, pageSize := parsePagination(c)
+
 	result, err := h.musicClient.SearchTracks(c.Request().Context(), &musicv1.SearchTracksRequest{
 		Query:    query,
-		Page:     1,
-		PageSize: 20,
+		Page:     page,
+		PageSize: pageSize,
 	})
 	if err != nil {
 		st, _ := status.FromError(err)
@@ -130,4 +132,32 @@ func toQueueItemHTTPResponse(item *musicv1.QueueItemResponse) dto.QueueItemHTTPR
 		Position:        int(item.Position),
 		CreatedAt:       item.CreatedAt,
 	}
+}
+
+func (h *MusicHandler) MarkAsPlayed(c *echo.Context) error {
+	queueItemUUID := c.Param("uuid")
+
+	_, err := h.musicClient.MarkAsPlayed(c.Request().Context(), &musicv1.MarkAsPlayedRequest{
+		QueueItemUuid: queueItemUUID,
+	})
+	if err != nil {
+		st, _ := status.FromError(err)
+		return response.Error(c, http.StatusBadRequest, st.Message(), nil)
+	}
+
+	return response.Success(c, http.StatusOK, "marked as played", nil)
+}
+
+func (h *MusicHandler) GetTrack(c *echo.Context) error {
+	trackUUID := c.Param("uuid")
+
+	result, err := h.musicClient.GetTrack(c.Request().Context(), &musicv1.GetTrackRequest{
+		TrackUuid: trackUUID,
+	})
+	if err != nil {
+		st, _ := status.FromError(err)
+		return response.Error(c, http.StatusNotFound, st.Message(), nil)
+	}
+
+	return response.Success(c, http.StatusOK, "track found", toTrackHTTPResponse(result))
 }

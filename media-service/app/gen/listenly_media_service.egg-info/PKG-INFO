@@ -1,0 +1,10 @@
+Metadata-Version: 2.4
+Name: listenly-media-service
+Version: 0.1.0
+Summary: Listenly media-service (gRPC + yt-dlp)
+Requires-Python: >=3.11
+Requires-Dist: grpcio>=1.68.1
+Requires-Dist: yt-dlp
+Requires-Dist: protobuf<8.0,>=7.36.2
+Provides-Extra: dev
+Requires-Dist: grpcio-tools>=1.68.1; extra == "dev"

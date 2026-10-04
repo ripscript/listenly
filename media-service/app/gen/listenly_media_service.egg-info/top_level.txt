@@ -1,0 +1,5 @@
+auth
+common
+media
+music
+room

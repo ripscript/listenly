@@ -2,7 +2,8 @@ import time
 import grpc
 from concurrent import futures
 
-from gen.media.v1 import media_pb2, media_pb2_grpc
+from media.v1 import media_pb2, media_pb2_grpc
+
 
 from media_extractor import (
     get_media_info,

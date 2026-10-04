@@ -34,6 +34,11 @@ class AuthServiceStub:
                 request_serializer=auth_dot_v1_dot_auth__pb2.LogoutRequest.SerializeToString,
                 response_deserializer=auth_dot_v1_dot_auth__pb2.LogoutResponse.FromString,
                 _registered_method=True)
+        self.LogoutAll = channel.unary_unary(
+                '/auth.v1.AuthService/LogoutAll',
+                request_serializer=auth_dot_v1_dot_auth__pb2.LogoutAllRequest.SerializeToString,
+                response_deserializer=auth_dot_v1_dot_auth__pb2.LogoutResponse.FromString,
+                _registered_method=True)
         self.VerifyToken = channel.unary_unary(
                 '/auth.v1.AuthService/VerifyToken',
                 request_serializer=auth_dot_v1_dot_auth__pb2.VerifyTokenRequest.SerializeToString,
@@ -78,6 +83,12 @@ class AuthServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def LogoutAll(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def VerifyToken(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -117,6 +128,11 @@ def add_AuthServiceServicer_to_server(servicer, server):
             'Logout': grpc.unary_unary_rpc_method_handler(
                     servicer.Logout,
                     request_deserializer=auth_dot_v1_dot_auth__pb2.LogoutRequest.FromString,
+                    response_serializer=auth_dot_v1_dot_auth__pb2.LogoutResponse.SerializeToString,
+            ),
+            'LogoutAll': grpc.unary_unary_rpc_method_handler(
+                    servicer.LogoutAll,
+                    request_deserializer=auth_dot_v1_dot_auth__pb2.LogoutAllRequest.FromString,
                     response_serializer=auth_dot_v1_dot_auth__pb2.LogoutResponse.SerializeToString,
             ),
             'VerifyToken': grpc.unary_unary_rpc_method_handler(
@@ -242,6 +258,33 @@ class AuthService:
             target,
             '/auth.v1.AuthService/Logout',
             auth_dot_v1_dot_auth__pb2.LogoutRequest.SerializeToString,
+            auth_dot_v1_dot_auth__pb2.LogoutResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def LogoutAll(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/auth.v1.AuthService/LogoutAll',
+            auth_dot_v1_dot_auth__pb2.LogoutAllRequest.SerializeToString,
             auth_dot_v1_dot_auth__pb2.LogoutResponse.FromString,
             options,
             channel_credentials,

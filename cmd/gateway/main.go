@@ -60,6 +60,7 @@ func main() {
 
 	protected := v1.Group("", middleware.JWTAuth(authClient))
 	protected.GET("/auth/me", authHandler.Verify)
+	protected.POST("/auth/logout-all", authHandler.LogoutAll)
 
 	roomGroup := protected.Group("/rooms")
 	roomGroup.POST("", roomHandler.CreateRoom)
@@ -69,12 +70,16 @@ func main() {
 	roomGroup.GET("", roomHandler.ListPublicRooms)
 	roomGroup.POST("/:uuid/join", roomHandler.JoinRoom)
 	roomGroup.GET("/me", roomHandler.ListMyRooms)
+	roomGroup.PUT("/:uuid/playback", roomHandler.UpdatePlayback)
+	roomGroup.GET("/:uuid/playback", roomHandler.GetPlayback)
 
 	musicGroup := protected.Group("/music")
 	musicGroup.GET("/search", musicHandler.SearchTracks)
 	musicGroup.POST("/rooms/:roomUuid/queue", musicHandler.RequestTrack)
 	musicGroup.GET("/rooms/:roomUuid/queue", musicHandler.GetQueue)
 	musicGroup.DELETE("/queue/:uuid", musicHandler.RemoveFromQueue)
+	musicGroup.PATCH("/queue/:uuid/played", musicHandler.MarkAsPlayed)
+	musicGroup.GET("/tracks/:uuid", musicHandler.GetTrack)
 
 	if err := e.Start(":" + cfg.HTTPPort); err != nil {
 		slog.Error("failed to start gateway", "error", err)

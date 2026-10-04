@@ -1,0 +1,6 @@
+grpcio>=1.68.1
+yt-dlp
+protobuf<8.0,>=7.36.2
+
+[dev]
+grpcio-tools>=1.68.1

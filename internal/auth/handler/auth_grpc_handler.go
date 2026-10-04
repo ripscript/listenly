@@ -70,6 +70,13 @@ func (h *AuthGRPCHandler) Logout(ctx context.Context, req *authv1.LogoutRequest)
 	return &authv1.LogoutResponse{Success: true}, nil
 }
 
+func (h *AuthGRPCHandler) LogoutAll(ctx context.Context, req *authv1.LogoutAllRequest) (*authv1.LogoutResponse, error) {
+	if err := h.service.LogoutAll(ctx, req.GetUserUuid()); err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+	return &authv1.LogoutResponse{Success: true}, nil
+}
+
 func (h *AuthGRPCHandler) VerifyToken(ctx context.Context, req *authv1.VerifyTokenRequest) (*authv1.VerifyTokenResponse, error) {
 	claims, err := h.service.VerifyAccessToken(req.GetAccessToken())
 	if err != nil {

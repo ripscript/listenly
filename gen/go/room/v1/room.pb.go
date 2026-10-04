@@ -987,6 +987,218 @@ func (x *CheckMembershipResponse) GetIsHost() bool {
 	return false
 }
 
+type UpdatePlaybackRequest struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Meta            *v1.RequestMeta        `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
+	RoomUuid        string                 `protobuf:"bytes,2,opt,name=room_uuid,json=roomUuid,proto3" json:"room_uuid,omitempty"`
+	RequesterUuid   string                 `protobuf:"bytes,3,opt,name=requester_uuid,json=requesterUuid,proto3" json:"requester_uuid,omitempty"`
+	CurrentTrackId  string                 `protobuf:"bytes,4,opt,name=current_track_id,json=currentTrackId,proto3" json:"current_track_id,omitempty"`
+	PositionSeconds int32                  `protobuf:"varint,5,opt,name=position_seconds,json=positionSeconds,proto3" json:"position_seconds,omitempty"`
+	IsPlaying       bool                   `protobuf:"varint,6,opt,name=is_playing,json=isPlaying,proto3" json:"is_playing,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *UpdatePlaybackRequest) Reset() {
+	*x = UpdatePlaybackRequest{}
+	mi := &file_room_v1_room_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdatePlaybackRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdatePlaybackRequest) ProtoMessage() {}
+
+func (x *UpdatePlaybackRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_room_v1_room_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdatePlaybackRequest.ProtoReflect.Descriptor instead.
+func (*UpdatePlaybackRequest) Descriptor() ([]byte, []int) {
+	return file_room_v1_room_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *UpdatePlaybackRequest) GetMeta() *v1.RequestMeta {
+	if x != nil {
+		return x.Meta
+	}
+	return nil
+}
+
+func (x *UpdatePlaybackRequest) GetRoomUuid() string {
+	if x != nil {
+		return x.RoomUuid
+	}
+	return ""
+}
+
+func (x *UpdatePlaybackRequest) GetRequesterUuid() string {
+	if x != nil {
+		return x.RequesterUuid
+	}
+	return ""
+}
+
+func (x *UpdatePlaybackRequest) GetCurrentTrackId() string {
+	if x != nil {
+		return x.CurrentTrackId
+	}
+	return ""
+}
+
+func (x *UpdatePlaybackRequest) GetPositionSeconds() int32 {
+	if x != nil {
+		return x.PositionSeconds
+	}
+	return 0
+}
+
+func (x *UpdatePlaybackRequest) GetIsPlaying() bool {
+	if x != nil {
+		return x.IsPlaying
+	}
+	return false
+}
+
+type GetPlaybackRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Meta          *v1.RequestMeta        `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
+	RoomUuid      string                 `protobuf:"bytes,2,opt,name=room_uuid,json=roomUuid,proto3" json:"room_uuid,omitempty"`
+	RequesterUuid string                 `protobuf:"bytes,3,opt,name=requester_uuid,json=requesterUuid,proto3" json:"requester_uuid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetPlaybackRequest) Reset() {
+	*x = GetPlaybackRequest{}
+	mi := &file_room_v1_room_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetPlaybackRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPlaybackRequest) ProtoMessage() {}
+
+func (x *GetPlaybackRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_room_v1_room_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPlaybackRequest.ProtoReflect.Descriptor instead.
+func (*GetPlaybackRequest) Descriptor() ([]byte, []int) {
+	return file_room_v1_room_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *GetPlaybackRequest) GetMeta() *v1.RequestMeta {
+	if x != nil {
+		return x.Meta
+	}
+	return nil
+}
+
+func (x *GetPlaybackRequest) GetRoomUuid() string {
+	if x != nil {
+		return x.RoomUuid
+	}
+	return ""
+}
+
+func (x *GetPlaybackRequest) GetRequesterUuid() string {
+	if x != nil {
+		return x.RequesterUuid
+	}
+	return ""
+}
+
+type PlaybackStateResponse struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	CurrentTrackId  string                 `protobuf:"bytes,1,opt,name=current_track_id,json=currentTrackId,proto3" json:"current_track_id,omitempty"`
+	PositionSeconds int32                  `protobuf:"varint,2,opt,name=position_seconds,json=positionSeconds,proto3" json:"position_seconds,omitempty"`
+	IsPlaying       bool                   `protobuf:"varint,3,opt,name=is_playing,json=isPlaying,proto3" json:"is_playing,omitempty"`
+	UpdatedAt       string                 `protobuf:"bytes,4,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *PlaybackStateResponse) Reset() {
+	*x = PlaybackStateResponse{}
+	mi := &file_room_v1_room_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PlaybackStateResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PlaybackStateResponse) ProtoMessage() {}
+
+func (x *PlaybackStateResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_room_v1_room_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PlaybackStateResponse.ProtoReflect.Descriptor instead.
+func (*PlaybackStateResponse) Descriptor() ([]byte, []int) {
+	return file_room_v1_room_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *PlaybackStateResponse) GetCurrentTrackId() string {
+	if x != nil {
+		return x.CurrentTrackId
+	}
+	return ""
+}
+
+func (x *PlaybackStateResponse) GetPositionSeconds() int32 {
+	if x != nil {
+		return x.PositionSeconds
+	}
+	return 0
+}
+
+func (x *PlaybackStateResponse) GetIsPlaying() bool {
+	if x != nil {
+		return x.IsPlaying
+	}
+	return false
+}
+
+func (x *PlaybackStateResponse) GetUpdatedAt() string {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return ""
+}
+
 var File_room_v1_room_proto protoreflect.FileDescriptor
 
 const file_room_v1_room_proto_rawDesc = "" +
@@ -1062,11 +1274,30 @@ const file_room_v1_room_proto_rawDesc = "" +
 	"\tuser_uuid\x18\x03 \x01(\tR\buserUuid\"O\n" +
 	"\x17CheckMembershipResponse\x12\x1b\n" +
 	"\tis_member\x18\x01 \x01(\bR\bisMember\x12\x17\n" +
-	"\ais_host\x18\x02 \x01(\bR\x06isHost*j\n" +
+	"\ais_host\x18\x02 \x01(\bR\x06isHost\"\xfb\x01\n" +
+	"\x15UpdatePlaybackRequest\x12*\n" +
+	"\x04meta\x18\x01 \x01(\v2\x16.common.v1.RequestMetaR\x04meta\x12\x1b\n" +
+	"\troom_uuid\x18\x02 \x01(\tR\broomUuid\x12%\n" +
+	"\x0erequester_uuid\x18\x03 \x01(\tR\rrequesterUuid\x12(\n" +
+	"\x10current_track_id\x18\x04 \x01(\tR\x0ecurrentTrackId\x12)\n" +
+	"\x10position_seconds\x18\x05 \x01(\x05R\x0fpositionSeconds\x12\x1d\n" +
+	"\n" +
+	"is_playing\x18\x06 \x01(\bR\tisPlaying\"\x84\x01\n" +
+	"\x12GetPlaybackRequest\x12*\n" +
+	"\x04meta\x18\x01 \x01(\v2\x16.common.v1.RequestMetaR\x04meta\x12\x1b\n" +
+	"\troom_uuid\x18\x02 \x01(\tR\broomUuid\x12%\n" +
+	"\x0erequester_uuid\x18\x03 \x01(\tR\rrequesterUuid\"\xaa\x01\n" +
+	"\x15PlaybackStateResponse\x12(\n" +
+	"\x10current_track_id\x18\x01 \x01(\tR\x0ecurrentTrackId\x12)\n" +
+	"\x10position_seconds\x18\x02 \x01(\x05R\x0fpositionSeconds\x12\x1d\n" +
+	"\n" +
+	"is_playing\x18\x03 \x01(\bR\tisPlaying\x12\x1d\n" +
+	"\n" +
+	"updated_at\x18\x04 \x01(\tR\tupdatedAt*j\n" +
 	"\x0eRoomVisibility\x12\x1f\n" +
 	"\x1bROOM_VISIBILITY_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16ROOM_VISIBILITY_PUBLIC\x10\x01\x12\x1b\n" +
-	"\x17ROOM_VISIBILITY_PRIVATE\x10\x022\xeb\x05\n" +
+	"\x17ROOM_VISIBILITY_PRIVATE\x10\x022\x89\a\n" +
 	"\vRoomService\x12?\n" +
 	"\n" +
 	"CreateRoom\x12\x1a.room.v1.CreateRoomRequest\x1a\x15.room.v1.RoomResponse\x129\n" +
@@ -1078,7 +1309,9 @@ const file_room_v1_room_proto_rawDesc = "" +
 	"\x0fListPublicRooms\x12\x1f.room.v1.ListPublicRoomsRequest\x1a .room.v1.ListPublicRoomsResponse\x12L\n" +
 	"\vListMyRooms\x12\x1b.room.v1.ListMyRoomsRequest\x1a .room.v1.ListPublicRoomsResponse\x12Q\n" +
 	"\x0fGetRoomInternal\x12\x1f.room.v1.GetRoomInternalRequest\x1a\x1d.room.v1.RoomInternalResponse\x12T\n" +
-	"\x0fCheckMembership\x12\x1f.room.v1.CheckMembershipRequest\x1a .room.v1.CheckMembershipResponseB(Z&listenly-backend/gen/go/room/v1;roomv1b\x06proto3"
+	"\x0fCheckMembership\x12\x1f.room.v1.CheckMembershipRequest\x1a .room.v1.CheckMembershipResponse\x12P\n" +
+	"\x0eUpdatePlayback\x12\x1e.room.v1.UpdatePlaybackRequest\x1a\x1e.room.v1.PlaybackStateResponse\x12J\n" +
+	"\vGetPlayback\x12\x1b.room.v1.GetPlaybackRequest\x1a\x1e.room.v1.PlaybackStateResponseB(Z&listenly-backend/gen/go/room/v1;roomv1b\x06proto3"
 
 var (
 	file_room_v1_room_proto_rawDescOnce sync.Once
@@ -1093,7 +1326,7 @@ func file_room_v1_room_proto_rawDescGZIP() []byte {
 }
 
 var file_room_v1_room_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_room_v1_room_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_room_v1_room_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
 var file_room_v1_room_proto_goTypes = []any{
 	(RoomVisibility)(0),             // 0: room.v1.RoomVisibility
 	(*CreateRoomRequest)(nil),       // 1: room.v1.CreateRoomRequest
@@ -1111,47 +1344,56 @@ var file_room_v1_room_proto_goTypes = []any{
 	(*RoomInternalResponse)(nil),    // 13: room.v1.RoomInternalResponse
 	(*CheckMembershipRequest)(nil),  // 14: room.v1.CheckMembershipRequest
 	(*CheckMembershipResponse)(nil), // 15: room.v1.CheckMembershipResponse
-	(*v1.RequestMeta)(nil),          // 16: common.v1.RequestMeta
+	(*UpdatePlaybackRequest)(nil),   // 16: room.v1.UpdatePlaybackRequest
+	(*GetPlaybackRequest)(nil),      // 17: room.v1.GetPlaybackRequest
+	(*PlaybackStateResponse)(nil),   // 18: room.v1.PlaybackStateResponse
+	(*v1.RequestMeta)(nil),          // 19: common.v1.RequestMeta
 }
 var file_room_v1_room_proto_depIdxs = []int32{
-	16, // 0: room.v1.CreateRoomRequest.meta:type_name -> common.v1.RequestMeta
+	19, // 0: room.v1.CreateRoomRequest.meta:type_name -> common.v1.RequestMeta
 	0,  // 1: room.v1.CreateRoomRequest.visibility:type_name -> room.v1.RoomVisibility
-	16, // 2: room.v1.GetRoomRequest.meta:type_name -> common.v1.RequestMeta
-	16, // 3: room.v1.JoinRoomByCodeRequest.meta:type_name -> common.v1.RequestMeta
-	16, // 4: room.v1.JoinRoomByTokenRequest.meta:type_name -> common.v1.RequestMeta
-	16, // 5: room.v1.LeaveRoomRequest.meta:type_name -> common.v1.RequestMeta
-	16, // 6: room.v1.ListPublicRoomsRequest.meta:type_name -> common.v1.RequestMeta
+	19, // 2: room.v1.GetRoomRequest.meta:type_name -> common.v1.RequestMeta
+	19, // 3: room.v1.JoinRoomByCodeRequest.meta:type_name -> common.v1.RequestMeta
+	19, // 4: room.v1.JoinRoomByTokenRequest.meta:type_name -> common.v1.RequestMeta
+	19, // 5: room.v1.LeaveRoomRequest.meta:type_name -> common.v1.RequestMeta
+	19, // 6: room.v1.ListPublicRoomsRequest.meta:type_name -> common.v1.RequestMeta
 	9,  // 7: room.v1.ListPublicRoomsResponse.rooms:type_name -> room.v1.RoomResponse
 	0,  // 8: room.v1.RoomResponse.visibility:type_name -> room.v1.RoomVisibility
-	16, // 9: room.v1.JoinRoomRequest.meta:type_name -> common.v1.RequestMeta
-	16, // 10: room.v1.ListMyRoomsRequest.meta:type_name -> common.v1.RequestMeta
-	16, // 11: room.v1.GetRoomInternalRequest.meta:type_name -> common.v1.RequestMeta
-	16, // 12: room.v1.CheckMembershipRequest.meta:type_name -> common.v1.RequestMeta
-	1,  // 13: room.v1.RoomService.CreateRoom:input_type -> room.v1.CreateRoomRequest
-	2,  // 14: room.v1.RoomService.GetRoom:input_type -> room.v1.GetRoomRequest
-	10, // 15: room.v1.RoomService.JoinRoom:input_type -> room.v1.JoinRoomRequest
-	3,  // 16: room.v1.RoomService.JoinRoomByCode:input_type -> room.v1.JoinRoomByCodeRequest
-	4,  // 17: room.v1.RoomService.JoinRoomByToken:input_type -> room.v1.JoinRoomByTokenRequest
-	5,  // 18: room.v1.RoomService.LeaveRoom:input_type -> room.v1.LeaveRoomRequest
-	7,  // 19: room.v1.RoomService.ListPublicRooms:input_type -> room.v1.ListPublicRoomsRequest
-	11, // 20: room.v1.RoomService.ListMyRooms:input_type -> room.v1.ListMyRoomsRequest
-	12, // 21: room.v1.RoomService.GetRoomInternal:input_type -> room.v1.GetRoomInternalRequest
-	14, // 22: room.v1.RoomService.CheckMembership:input_type -> room.v1.CheckMembershipRequest
-	9,  // 23: room.v1.RoomService.CreateRoom:output_type -> room.v1.RoomResponse
-	9,  // 24: room.v1.RoomService.GetRoom:output_type -> room.v1.RoomResponse
-	9,  // 25: room.v1.RoomService.JoinRoom:output_type -> room.v1.RoomResponse
-	9,  // 26: room.v1.RoomService.JoinRoomByCode:output_type -> room.v1.RoomResponse
-	9,  // 27: room.v1.RoomService.JoinRoomByToken:output_type -> room.v1.RoomResponse
-	6,  // 28: room.v1.RoomService.LeaveRoom:output_type -> room.v1.LeaveRoomResponse
-	8,  // 29: room.v1.RoomService.ListPublicRooms:output_type -> room.v1.ListPublicRoomsResponse
-	8,  // 30: room.v1.RoomService.ListMyRooms:output_type -> room.v1.ListPublicRoomsResponse
-	13, // 31: room.v1.RoomService.GetRoomInternal:output_type -> room.v1.RoomInternalResponse
-	15, // 32: room.v1.RoomService.CheckMembership:output_type -> room.v1.CheckMembershipResponse
-	23, // [23:33] is the sub-list for method output_type
-	13, // [13:23] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	19, // 9: room.v1.JoinRoomRequest.meta:type_name -> common.v1.RequestMeta
+	19, // 10: room.v1.ListMyRoomsRequest.meta:type_name -> common.v1.RequestMeta
+	19, // 11: room.v1.GetRoomInternalRequest.meta:type_name -> common.v1.RequestMeta
+	19, // 12: room.v1.CheckMembershipRequest.meta:type_name -> common.v1.RequestMeta
+	19, // 13: room.v1.UpdatePlaybackRequest.meta:type_name -> common.v1.RequestMeta
+	19, // 14: room.v1.GetPlaybackRequest.meta:type_name -> common.v1.RequestMeta
+	1,  // 15: room.v1.RoomService.CreateRoom:input_type -> room.v1.CreateRoomRequest
+	2,  // 16: room.v1.RoomService.GetRoom:input_type -> room.v1.GetRoomRequest
+	10, // 17: room.v1.RoomService.JoinRoom:input_type -> room.v1.JoinRoomRequest
+	3,  // 18: room.v1.RoomService.JoinRoomByCode:input_type -> room.v1.JoinRoomByCodeRequest
+	4,  // 19: room.v1.RoomService.JoinRoomByToken:input_type -> room.v1.JoinRoomByTokenRequest
+	5,  // 20: room.v1.RoomService.LeaveRoom:input_type -> room.v1.LeaveRoomRequest
+	7,  // 21: room.v1.RoomService.ListPublicRooms:input_type -> room.v1.ListPublicRoomsRequest
+	11, // 22: room.v1.RoomService.ListMyRooms:input_type -> room.v1.ListMyRoomsRequest
+	12, // 23: room.v1.RoomService.GetRoomInternal:input_type -> room.v1.GetRoomInternalRequest
+	14, // 24: room.v1.RoomService.CheckMembership:input_type -> room.v1.CheckMembershipRequest
+	16, // 25: room.v1.RoomService.UpdatePlayback:input_type -> room.v1.UpdatePlaybackRequest
+	17, // 26: room.v1.RoomService.GetPlayback:input_type -> room.v1.GetPlaybackRequest
+	9,  // 27: room.v1.RoomService.CreateRoom:output_type -> room.v1.RoomResponse
+	9,  // 28: room.v1.RoomService.GetRoom:output_type -> room.v1.RoomResponse
+	9,  // 29: room.v1.RoomService.JoinRoom:output_type -> room.v1.RoomResponse
+	9,  // 30: room.v1.RoomService.JoinRoomByCode:output_type -> room.v1.RoomResponse
+	9,  // 31: room.v1.RoomService.JoinRoomByToken:output_type -> room.v1.RoomResponse
+	6,  // 32: room.v1.RoomService.LeaveRoom:output_type -> room.v1.LeaveRoomResponse
+	8,  // 33: room.v1.RoomService.ListPublicRooms:output_type -> room.v1.ListPublicRoomsResponse
+	8,  // 34: room.v1.RoomService.ListMyRooms:output_type -> room.v1.ListPublicRoomsResponse
+	13, // 35: room.v1.RoomService.GetRoomInternal:output_type -> room.v1.RoomInternalResponse
+	15, // 36: room.v1.RoomService.CheckMembership:output_type -> room.v1.CheckMembershipResponse
+	18, // 37: room.v1.RoomService.UpdatePlayback:output_type -> room.v1.PlaybackStateResponse
+	18, // 38: room.v1.RoomService.GetPlayback:output_type -> room.v1.PlaybackStateResponse
+	27, // [27:39] is the sub-list for method output_type
+	15, // [15:27] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_room_v1_room_proto_init() }
@@ -1166,7 +1408,7 @@ func file_room_v1_room_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_room_v1_room_proto_rawDesc), len(file_room_v1_room_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   15,
+			NumMessages:   18,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

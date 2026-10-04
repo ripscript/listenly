@@ -17,6 +17,9 @@ service RoomService {
   rpc ListMyRooms(ListMyRoomsRequest) returns (ListPublicRoomsResponse);
   rpc GetRoomInternal(GetRoomInternalRequest) returns (RoomInternalResponse);
   rpc CheckMembership(CheckMembershipRequest) returns (CheckMembershipResponse);
+
+  rpc UpdatePlayback(UpdatePlaybackRequest) returns (PlaybackStateResponse);
+  rpc GetPlayback(GetPlaybackRequest) returns (PlaybackStateResponse);
 }
 
 enum RoomVisibility {
@@ -115,4 +118,26 @@ message CheckMembershipRequest {
 message CheckMembershipResponse {
   bool is_member = 1;
   bool is_host = 2;
+}
+
+message UpdatePlaybackRequest {
+  common.v1.RequestMeta meta = 1;
+  string room_uuid = 2;
+  string requester_uuid = 3;
+  string current_track_id = 4;
+  int32 position_seconds = 5;
+  bool is_playing = 6;
+}
+
+message GetPlaybackRequest {
+  common.v1.RequestMeta meta = 1;
+  string room_uuid = 2;
+  string requester_uuid = 3;
+}
+
+message PlaybackStateResponse {
+  string current_track_id = 1;
+  int32 position_seconds = 2;
+  bool is_playing = 3;
+  string updated_at = 4;
 }

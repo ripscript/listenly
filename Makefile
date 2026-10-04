@@ -1,4 +1,4 @@
-.PHONY: proto migrate-up migrate-down migrate-create run-gateway run-auth
+.PHONY: proto migrate-up migrate-down migrate-create run-gateway run-auth run-media media-setup
 
 # ── Proto ──────────────────────────────
 proto:
@@ -36,6 +36,20 @@ run-room:
 
 run-music:
 	go run ./cmd/music-service
+
+# ── Media Service (Python) ─────────────
+MEDIA_DIR=media-service
+VENV_PY=$(MEDIA_DIR)/venv/bin/python
+VENV_PIP=$(MEDIA_DIR)/venv/bin/pip
+
+run-media:
+	cd $(MEDIA_DIR)/app && ../venv/bin/python main.py
+
+media-setup:
+	cd $(MEDIA_DIR) && python3.12 -m venv venv && \
+		venv/bin/pip install --upgrade pip && \
+		venv/bin/pip install -e .
+
 
 # ── Dev ────────────────────────────────
 tidy:
