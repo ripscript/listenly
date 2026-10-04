@@ -2,6 +2,7 @@ package main
 
 import (
 	"log/slog"
+	"time"
 
 	"github.com/labstack/echo/v5"
 	echomw "github.com/labstack/echo/v5/middleware"
@@ -11,6 +12,7 @@ import (
 	"listenly-backend/internal/gateway/middleware"
 	"listenly-backend/internal/gateway/ws"
 	"listenly-backend/pkg/grpcclient"
+	"listenly-backend/pkg/jwt"
 	"listenly-backend/pkg/rabbitmq"
 	"listenly-backend/pkg/validator"
 )
@@ -18,6 +20,15 @@ import (
 func main() {
 	config.LoadEnv("cmd/gateway/.env")
 	cfg := config.LoadGatewayConfig()
+
+	var jwtManager *jwt.Manager
+	if cfg.JWTSecret != "" {
+		// TTL tidak dipakai saat verifikasi, cukup nilai apa pun yang valid
+		jwtManager = jwt.NewManager(cfg.JWTSecret, 15*time.Minute, 7*24*time.Hour)
+		slog.Info("gateway: local JWT verification enabled")
+	} else {
+		slog.Warn("gateway: JWT_SECRET not set, falling back to auth-service VerifyToken (slower)")
+	}
 
 	authClient, err := grpcclient.NewAuthServiceClient(cfg.AuthServiceAddr)
 	if err != nil {
@@ -39,7 +50,7 @@ func main() {
 	// --- WebSocket realtime ---
 	hub := ws.NewHub()
 
-	consumer, err := rabbitmq.NewConsumer(cfg.RabbitMQURL, []string{"room.*.playback", "room.*.queue"})
+	consumer, err := rabbitmq.NewConsumer(cfg.RabbitMQURL, []string{"room.*.playback", "room.*.queue", "room.*.presence"})
 	if err != nil {
 		slog.Error("failed to connect rabbitmq consumer", "error", err)
 		return
@@ -80,7 +91,7 @@ func main() {
 	authGroup.POST("/refresh", authHandler.Refresh)
 	authGroup.POST("/logout", authHandler.Logout)
 
-	protected := v1.Group("", middleware.JWTAuth(authClient))
+	protected := v1.Group("", middleware.JWTAuth(authClient, jwtManager))
 	protected.GET("/auth/me", authHandler.Verify)
 	protected.POST("/auth/logout-all", authHandler.LogoutAll)
 

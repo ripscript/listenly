@@ -7,6 +7,7 @@ type GatewayConfig struct {
 	MusicServiceAddr string
 	WebBaseURL       string
 	RabbitMQURL      string
+	JWTSecret        string
 }
 
 func LoadGatewayConfig() GatewayConfig {
@@ -17,5 +18,6 @@ func LoadGatewayConfig() GatewayConfig {
 		MusicServiceAddr: getEnv("MUSIC_SERVICE_ADDR", "localhost:50053"),
 		WebBaseURL:       getEnv("WEB_BASE_URL", "http://localhost:3000"),
 		RabbitMQURL:      getEnv("RABBITMQ_URL", "amqp://admin:admin123@localhost:5672/"),
+		JWTSecret:        getEnv("JWT_SECRET", ""),
 	}
 }

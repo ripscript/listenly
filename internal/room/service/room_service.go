@@ -180,6 +180,8 @@ func (s *roomService) joinRoom(ctx context.Context, room *models.Room, userUUID 
 		return nil, err
 	}
 
+	s.publishPresenceEvent(ctx, room.UUID.String(), userUUID, "joined")
+
 	return s.toResponse(ctx, room, userUUID, false)
 }
 
@@ -201,6 +203,8 @@ func (s *roomService) LeaveRoom(ctx context.Context, roomUUID, userUUID string) 
 	if err := s.stateRepo.RemoveOnlineMember(ctx, roomUUID, userUUID); err != nil {
 		return err
 	}
+
+	s.publishPresenceEvent(ctx, roomUUID, userUUID, "left")
 
 	return s.repo.RemoveMember(ctx, room.ID, userID)
 }
@@ -442,4 +446,19 @@ func toPlaybackState(s *repository.RoomState) *PlaybackState {
 		IsPlaying:       s.IsPlaying,
 		UpdatedAt:       s.UpdatedAt.Format(time.RFC3339),
 	}
+}
+
+func (s *roomService) publishPresenceEvent(ctx context.Context, roomUUID, userUUID, action string) {
+	onlineCount, _ := s.stateRepo.CountOnlineMembers(ctx, roomUUID)
+
+	_ = s.publisher.Publish(ctx, rabbitmq.RoomPresenceKey(roomUUID), rabbitmq.Event{
+		Type:     rabbitmq.EventPresenceUpdated,
+		RoomUUID: roomUUID,
+		Payload: map[string]any{
+			"action":       action, // "joined" | "left"
+			"user_uuid":    userUUID,
+			"online_count": onlineCount,
+		},
+		Timestamp: time.Now(),
+	})
 }
