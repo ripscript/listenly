@@ -161,3 +161,79 @@ func (h *MusicHandler) GetTrack(c *echo.Context) error {
 
 	return response.Success(c, http.StatusOK, "track found", toTrackHTTPResponse(result))
 }
+
+func (h *MusicHandler) GetStreamURL(c *echo.Context) error {
+	trackUUID := c.Param("uuid")
+
+	result, err := h.musicClient.GetStreamURL(c.Request().Context(), &musicv1.GetStreamURLRequest{
+		TrackUuid: trackUUID,
+	})
+	if err != nil {
+		st, _ := status.FromError(err)
+		return response.Error(c, http.StatusNotFound, st.Message(), nil)
+	}
+
+	return response.Success(c, http.StatusOK, "stream url", dto.StreamURLHTTPResponse{
+		StreamURL: result.StreamUrl,
+		ExpiresAt: result.ExpiresAt,
+	})
+}
+
+func (h *MusicHandler) SearchYouTube(c *echo.Context) error {
+	query := c.QueryParam("q")
+	if query == "" {
+		return response.Error(c, http.StatusBadRequest, "query parameter 'q' is required", nil)
+	}
+
+	result, err := h.musicClient.SearchYouTube(c.Request().Context(), &musicv1.SearchYouTubeRequest{
+		Query: query,
+		Limit: 10,
+	})
+	if err != nil {
+		st, _ := status.FromError(err)
+		return response.Error(c, http.StatusInternalServerError, st.Message(), nil)
+	}
+
+	results := make([]dto.YouTubeResultHTTPResponse, 0, len(result.Results))
+	for _, r := range result.Results {
+		results = append(results, dto.YouTubeResultHTTPResponse{
+			YoutubeVideoID:  r.YoutubeVideoId,
+			Title:           r.Title,
+			Channel:         r.Channel,
+			DurationSeconds: int(r.DurationSeconds),
+			ThumbnailURL:    r.ThumbnailUrl,
+		})
+	}
+
+	return response.Success(c, http.StatusOK, "youtube search results", dto.SearchYouTubeHTTPResponse{
+		Results: results,
+	})
+}
+
+func (h *MusicHandler) AdvanceQueue(c *echo.Context) error {
+	roomUUID := c.Param("roomUuid")
+	requesterUUID := ctxutil.GetUserUUID(c)
+
+	var req dto.AdvanceQueueHTTPRequest
+	if err := c.Bind(&req); err != nil {
+		return response.Error(c, http.StatusBadRequest, "invalid request body", nil)
+	}
+
+	result, err := h.musicClient.AdvanceQueue(c.Request().Context(), &musicv1.AdvanceQueueRequest{
+		RoomUuid:             roomUUID,
+		RequesterUuid:        requesterUUID,
+		CurrentQueueItemUuid: req.CurrentQueueItemUUID,
+	})
+	if err != nil {
+		st, _ := status.FromError(err)
+		return response.Error(c, http.StatusForbidden, st.Message(), nil)
+	}
+
+	resp := dto.AdvanceQueueHTTPResponse{HasNext: result.HasNext}
+	if result.HasNext && result.NextItem != nil {
+		item := toQueueItemHTTPResponse(result.NextItem)
+		resp.NextItem = &item
+	}
+
+	return response.Success(c, http.StatusOK, "queue advanced", resp)
+}

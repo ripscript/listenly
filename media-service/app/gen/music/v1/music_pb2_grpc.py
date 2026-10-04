@@ -44,6 +44,21 @@ class MusicServiceStub:
                 request_serializer=music_dot_v1_dot_music__pb2.MarkAsPlayedRequest.SerializeToString,
                 response_deserializer=music_dot_v1_dot_music__pb2.MarkAsPlayedResponse.FromString,
                 _registered_method=True)
+        self.GetStreamURL = channel.unary_unary(
+                '/music.v1.MusicService/GetStreamURL',
+                request_serializer=music_dot_v1_dot_music__pb2.GetStreamURLRequest.SerializeToString,
+                response_deserializer=music_dot_v1_dot_music__pb2.GetStreamURLResponse.FromString,
+                _registered_method=True)
+        self.SearchYouTube = channel.unary_unary(
+                '/music.v1.MusicService/SearchYouTube',
+                request_serializer=music_dot_v1_dot_music__pb2.SearchYouTubeRequest.SerializeToString,
+                response_deserializer=music_dot_v1_dot_music__pb2.SearchYouTubeResponse.FromString,
+                _registered_method=True)
+        self.AdvanceQueue = channel.unary_unary(
+                '/music.v1.MusicService/AdvanceQueue',
+                request_serializer=music_dot_v1_dot_music__pb2.AdvanceQueueRequest.SerializeToString,
+                response_deserializer=music_dot_v1_dot_music__pb2.AdvanceQueueResponse.FromString,
+                _registered_method=True)
 
 
 class MusicServiceServicer:
@@ -85,6 +100,24 @@ class MusicServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetStreamURL(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SearchYouTube(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def AdvanceQueue(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_MusicServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -117,6 +150,21 @@ def add_MusicServiceServicer_to_server(servicer, server):
                     servicer.MarkAsPlayed,
                     request_deserializer=music_dot_v1_dot_music__pb2.MarkAsPlayedRequest.FromString,
                     response_serializer=music_dot_v1_dot_music__pb2.MarkAsPlayedResponse.SerializeToString,
+            ),
+            'GetStreamURL': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetStreamURL,
+                    request_deserializer=music_dot_v1_dot_music__pb2.GetStreamURLRequest.FromString,
+                    response_serializer=music_dot_v1_dot_music__pb2.GetStreamURLResponse.SerializeToString,
+            ),
+            'SearchYouTube': grpc.unary_unary_rpc_method_handler(
+                    servicer.SearchYouTube,
+                    request_deserializer=music_dot_v1_dot_music__pb2.SearchYouTubeRequest.FromString,
+                    response_serializer=music_dot_v1_dot_music__pb2.SearchYouTubeResponse.SerializeToString,
+            ),
+            'AdvanceQueue': grpc.unary_unary_rpc_method_handler(
+                    servicer.AdvanceQueue,
+                    request_deserializer=music_dot_v1_dot_music__pb2.AdvanceQueueRequest.FromString,
+                    response_serializer=music_dot_v1_dot_music__pb2.AdvanceQueueResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -281,6 +329,87 @@ class MusicService:
             '/music.v1.MusicService/MarkAsPlayed',
             music_dot_v1_dot_music__pb2.MarkAsPlayedRequest.SerializeToString,
             music_dot_v1_dot_music__pb2.MarkAsPlayedResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetStreamURL(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/music.v1.MusicService/GetStreamURL',
+            music_dot_v1_dot_music__pb2.GetStreamURLRequest.SerializeToString,
+            music_dot_v1_dot_music__pb2.GetStreamURLResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SearchYouTube(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/music.v1.MusicService/SearchYouTube',
+            music_dot_v1_dot_music__pb2.SearchYouTubeRequest.SerializeToString,
+            music_dot_v1_dot_music__pb2.SearchYouTubeResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def AdvanceQueue(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/music.v1.MusicService/AdvanceQueue',
+            music_dot_v1_dot_music__pb2.AdvanceQueueRequest.SerializeToString,
+            music_dot_v1_dot_music__pb2.AdvanceQueueResponse.FromString,
             options,
             channel_credentials,
             insecure,

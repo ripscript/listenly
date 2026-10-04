@@ -19,8 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	MediaService_GetMediaInfo_FullMethodName = "/media.v1.MediaService/GetMediaInfo"
-	MediaService_GetStreamUrl_FullMethodName = "/media.v1.MediaService/GetStreamUrl"
+	MediaService_GetMediaInfo_FullMethodName  = "/media.v1.MediaService/GetMediaInfo"
+	MediaService_GetStreamUrl_FullMethodName  = "/media.v1.MediaService/GetStreamUrl"
+	MediaService_SearchYouTube_FullMethodName = "/media.v1.MediaService/SearchYouTube"
 )
 
 // MediaServiceClient is the client API for MediaService service.
@@ -29,6 +30,7 @@ const (
 type MediaServiceClient interface {
 	GetMediaInfo(ctx context.Context, in *GetMediaInfoRequest, opts ...grpc.CallOption) (*GetMediaInfoResponse, error)
 	GetStreamUrl(ctx context.Context, in *GetStreamUrlRequest, opts ...grpc.CallOption) (*GetStreamUrlResponse, error)
+	SearchYouTube(ctx context.Context, in *SearchYouTubeRequest, opts ...grpc.CallOption) (*SearchYouTubeResponse, error)
 }
 
 type mediaServiceClient struct {
@@ -59,12 +61,23 @@ func (c *mediaServiceClient) GetStreamUrl(ctx context.Context, in *GetStreamUrlR
 	return out, nil
 }
 
+func (c *mediaServiceClient) SearchYouTube(ctx context.Context, in *SearchYouTubeRequest, opts ...grpc.CallOption) (*SearchYouTubeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SearchYouTubeResponse)
+	err := c.cc.Invoke(ctx, MediaService_SearchYouTube_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MediaServiceServer is the server API for MediaService service.
 // All implementations must embed UnimplementedMediaServiceServer
 // for forward compatibility.
 type MediaServiceServer interface {
 	GetMediaInfo(context.Context, *GetMediaInfoRequest) (*GetMediaInfoResponse, error)
 	GetStreamUrl(context.Context, *GetStreamUrlRequest) (*GetStreamUrlResponse, error)
+	SearchYouTube(context.Context, *SearchYouTubeRequest) (*SearchYouTubeResponse, error)
 	mustEmbedUnimplementedMediaServiceServer()
 }
 
@@ -80,6 +93,9 @@ func (UnimplementedMediaServiceServer) GetMediaInfo(context.Context, *GetMediaIn
 }
 func (UnimplementedMediaServiceServer) GetStreamUrl(context.Context, *GetStreamUrlRequest) (*GetStreamUrlResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetStreamUrl not implemented")
+}
+func (UnimplementedMediaServiceServer) SearchYouTube(context.Context, *SearchYouTubeRequest) (*SearchYouTubeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SearchYouTube not implemented")
 }
 func (UnimplementedMediaServiceServer) mustEmbedUnimplementedMediaServiceServer() {}
 func (UnimplementedMediaServiceServer) testEmbeddedByValue()                      {}
@@ -138,6 +154,24 @@ func _MediaService_GetStreamUrl_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MediaService_SearchYouTube_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchYouTubeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MediaServiceServer).SearchYouTube(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MediaService_SearchYouTube_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MediaServiceServer).SearchYouTube(ctx, req.(*SearchYouTubeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MediaService_ServiceDesc is the grpc.ServiceDesc for MediaService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -152,6 +186,10 @@ var MediaService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetStreamUrl",
 			Handler:    _MediaService_GetStreamUrl_Handler,
+		},
+		{
+			MethodName: "SearchYouTube",
+			Handler:    _MediaService_SearchYouTube_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

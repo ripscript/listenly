@@ -9,6 +9,7 @@ import "common/v1/common.proto";
 service MediaService {
   rpc GetMediaInfo(GetMediaInfoRequest) returns (GetMediaInfoResponse);
   rpc GetStreamUrl(GetStreamUrlRequest) returns (GetStreamUrlResponse);
+  rpc SearchYouTube(SearchYouTubeRequest) returns (SearchYouTubeResponse);
 }
 
 message GetMediaInfoRequest {
@@ -40,4 +41,22 @@ enum AudioQuality {
   AUDIO_QUALITY_LOW = 1;    // 128kbps
   AUDIO_QUALITY_MEDIUM = 2; // 192kbps
   AUDIO_QUALITY_HIGH = 3;   // 320kbps
+}
+
+message SearchYouTubeRequest {
+  common.v1.RequestMeta meta = 1;
+  string query = 2;
+  int32 limit = 3;
+}
+
+message SearchYouTubeResult {
+  string video_id = 1;
+  string title = 2;
+  string channel = 3;
+  int32 duration_seconds = 4;
+  string thumbnail_url = 5;
+}
+
+message SearchYouTubeResponse {
+  repeated SearchYouTubeResult results = 1;
 }

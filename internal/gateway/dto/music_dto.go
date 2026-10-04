@@ -30,3 +30,29 @@ type SearchTracksHTTPResponse struct {
 	Tracks     []TrackHTTPResponse `json:"tracks"`
 	TotalItems int                 `json:"total_items"`
 }
+
+type StreamURLHTTPResponse struct {
+	StreamURL string `json:"stream_url"`
+	ExpiresAt string `json:"expires_at"`
+}
+
+type YouTubeResultHTTPResponse struct {
+	YoutubeVideoID  string `json:"youtube_video_id"`
+	Title           string `json:"title"`
+	Channel         string `json:"channel"`
+	DurationSeconds int    `json:"duration_seconds"`
+	ThumbnailURL    string `json:"thumbnail_url"`
+}
+
+type SearchYouTubeHTTPResponse struct {
+	Results []YouTubeResultHTTPResponse `json:"results"`
+}
+
+type AdvanceQueueHTTPRequest struct {
+	CurrentQueueItemUUID string `json:"current_queue_item_uuid"`
+}
+
+type AdvanceQueueHTTPResponse struct {
+	HasNext  bool                   `json:"has_next"`
+	NextItem *QueueItemHTTPResponse `json:"next_item,omitempty"`
+}

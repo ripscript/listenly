@@ -12,6 +12,7 @@ import (
 	"listenly-backend/internal/room/dto"
 	"listenly-backend/internal/room/models"
 	"listenly-backend/internal/room/repository"
+	"listenly-backend/pkg/rabbitmq"
 )
 
 var (
@@ -21,6 +22,10 @@ var (
 	ErrNotAuthorized = errors.New("not authorized")
 	ErrUserNotFound  = errors.New("user not found")
 )
+
+type EventPublisher interface {
+	Publish(ctx context.Context, routingKey string, payload any) error
+}
 
 type RoomService interface {
 	CreateRoom(ctx context.Context, req dto.CreateRoomRequest) (*dto.RoomResponse, error)
@@ -41,10 +46,11 @@ type roomService struct {
 	repo       repository.RoomRepository
 	stateRepo  repository.RoomStateRepository
 	authClient authv1.AuthServiceClient
+	publisher  EventPublisher
 }
 
-func NewRoomService(repo repository.RoomRepository, stateRepo repository.RoomStateRepository, authClient authv1.AuthServiceClient) RoomService {
-	return &roomService{repo: repo, stateRepo: stateRepo, authClient: authClient}
+func NewRoomService(repo repository.RoomRepository, stateRepo repository.RoomStateRepository, authClient authv1.AuthServiceClient, publisher EventPublisher) RoomService {
+	return &roomService{repo: repo, stateRepo: stateRepo, authClient: authClient, publisher: publisher}
 }
 
 func (s *roomService) resolveUserID(ctx context.Context, userUUID string) (int64, error) {
@@ -396,7 +402,17 @@ func (s *roomService) UpdatePlayback(ctx context.Context, roomUUID, requesterUUI
 	if err != nil {
 		return nil, err
 	}
-	return toPlaybackState(updated), nil
+
+	result := toPlaybackState(updated)
+	// broadcast event playback ke semua subscriber room ini
+	_ = s.publisher.Publish(ctx, rabbitmq.RoomPlaybackKey(roomUUID), rabbitmq.Event{
+		Type:      rabbitmq.EventPlaybackUpdated,
+		RoomUUID:  roomUUID,
+		Payload:   result,
+		Timestamp: time.Now(),
+	})
+
+	return result, nil
 }
 
 func (s *roomService) GetPlayback(ctx context.Context, roomUUID, requesterUUID string) (*PlaybackState, error) {

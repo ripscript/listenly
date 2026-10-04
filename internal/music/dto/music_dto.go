@@ -36,3 +36,22 @@ type QueueItemResponse struct {
 	Position        int
 	CreatedAt       time.Time
 }
+
+type StreamURLResponse struct {
+	StreamURL string
+	ExpiresAt string
+}
+
+type YouTubeTrackResult struct {
+	YoutubeVideoID  string
+	Title           string
+	Channel         string
+	DurationSeconds int
+	ThumbnailURL    string
+}
+
+type AdvanceQueueRequest struct {
+	RoomUUID             string
+	RequesterUUID        string
+	CurrentQueueItemUUID string
+}

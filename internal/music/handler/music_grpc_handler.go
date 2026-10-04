@@ -114,6 +114,20 @@ func (h *MusicGRPCHandler) MarkAsPlayed(ctx context.Context, req *musicv1.MarkAs
 	return &musicv1.MarkAsPlayedResponse{Success: true}, nil
 }
 
+func (h *MusicGRPCHandler) GetStreamURL(ctx context.Context, req *musicv1.GetStreamURLRequest) (*musicv1.GetStreamURLResponse, error) {
+	result, err := h.service.GetStreamURL(ctx, req.GetTrackUuid())
+	if err != nil {
+		if errors.Is(err, service.ErrTrackNotFound) {
+			return nil, status.Error(codes.NotFound, err.Error())
+		}
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+	return &musicv1.GetStreamURLResponse{
+		StreamUrl: result.StreamURL,
+		ExpiresAt: result.ExpiresAt,
+	}, nil
+}
+
 func toProtoTrackResponse(t *dto.TrackResponse) *musicv1.TrackResponse {
 	return &musicv1.TrackResponse{
 		Uuid:            t.UUID,
@@ -134,4 +148,45 @@ func toProtoQueueItemResponse(item *dto.QueueItemResponse) *musicv1.QueueItemRes
 		Position:        int32(item.Position),
 		CreatedAt:       item.CreatedAt.Format(time.RFC3339),
 	}
+}
+
+func (h *MusicGRPCHandler) SearchYouTube(ctx context.Context, req *musicv1.SearchYouTubeRequest) (*musicv1.SearchYouTubeResponse, error) {
+	results, err := h.service.SearchYouTube(ctx, req.GetQuery(), int(req.GetLimit()))
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	protoResults := make([]*musicv1.YouTubeTrackResult, 0, len(results))
+	for _, r := range results {
+		protoResults = append(protoResults, &musicv1.YouTubeTrackResult{
+			YoutubeVideoId:  r.YoutubeVideoID,
+			Title:           r.Title,
+			Channel:         r.Channel,
+			DurationSeconds: int32(r.DurationSeconds),
+			ThumbnailUrl:    r.ThumbnailURL,
+		})
+	}
+	return &musicv1.SearchYouTubeResponse{Results: protoResults}, nil
+}
+
+func (h *MusicGRPCHandler) AdvanceQueue(ctx context.Context, req *musicv1.AdvanceQueueRequest) (*musicv1.AdvanceQueueResponse, error) {
+	next, err := h.service.AdvanceQueue(ctx, dto.AdvanceQueueRequest{
+		RoomUUID:             req.GetRoomUuid(),
+		RequesterUUID:        req.GetRequesterUuid(),
+		CurrentQueueItemUUID: req.GetCurrentQueueItemUuid(),
+	})
+	if err != nil {
+		if errors.Is(err, service.ErrNotRoomMember) || errors.Is(err, service.ErrNotAuthorized) {
+			return nil, status.Error(codes.PermissionDenied, err.Error())
+		}
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	if next == nil {
+		return &musicv1.AdvanceQueueResponse{HasNext: false}, nil
+	}
+	return &musicv1.AdvanceQueueResponse{
+		HasNext:  true,
+		NextItem: toProtoQueueItemResponse(next),
+	}, nil
 }

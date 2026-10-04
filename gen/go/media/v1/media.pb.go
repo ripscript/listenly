@@ -314,6 +314,186 @@ func (x *GetStreamUrlResponse) GetExpiresAt() string {
 	return ""
 }
 
+type SearchYouTubeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Meta          *v1.RequestMeta        `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
+	Query         string                 `protobuf:"bytes,2,opt,name=query,proto3" json:"query,omitempty"`
+	Limit         int32                  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SearchYouTubeRequest) Reset() {
+	*x = SearchYouTubeRequest{}
+	mi := &file_media_v1_media_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SearchYouTubeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SearchYouTubeRequest) ProtoMessage() {}
+
+func (x *SearchYouTubeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_media_v1_media_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SearchYouTubeRequest.ProtoReflect.Descriptor instead.
+func (*SearchYouTubeRequest) Descriptor() ([]byte, []int) {
+	return file_media_v1_media_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *SearchYouTubeRequest) GetMeta() *v1.RequestMeta {
+	if x != nil {
+		return x.Meta
+	}
+	return nil
+}
+
+func (x *SearchYouTubeRequest) GetQuery() string {
+	if x != nil {
+		return x.Query
+	}
+	return ""
+}
+
+func (x *SearchYouTubeRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+type SearchYouTubeResult struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	VideoId         string                 `protobuf:"bytes,1,opt,name=video_id,json=videoId,proto3" json:"video_id,omitempty"`
+	Title           string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	Channel         string                 `protobuf:"bytes,3,opt,name=channel,proto3" json:"channel,omitempty"`
+	DurationSeconds int32                  `protobuf:"varint,4,opt,name=duration_seconds,json=durationSeconds,proto3" json:"duration_seconds,omitempty"`
+	ThumbnailUrl    string                 `protobuf:"bytes,5,opt,name=thumbnail_url,json=thumbnailUrl,proto3" json:"thumbnail_url,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *SearchYouTubeResult) Reset() {
+	*x = SearchYouTubeResult{}
+	mi := &file_media_v1_media_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SearchYouTubeResult) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SearchYouTubeResult) ProtoMessage() {}
+
+func (x *SearchYouTubeResult) ProtoReflect() protoreflect.Message {
+	mi := &file_media_v1_media_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SearchYouTubeResult.ProtoReflect.Descriptor instead.
+func (*SearchYouTubeResult) Descriptor() ([]byte, []int) {
+	return file_media_v1_media_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *SearchYouTubeResult) GetVideoId() string {
+	if x != nil {
+		return x.VideoId
+	}
+	return ""
+}
+
+func (x *SearchYouTubeResult) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *SearchYouTubeResult) GetChannel() string {
+	if x != nil {
+		return x.Channel
+	}
+	return ""
+}
+
+func (x *SearchYouTubeResult) GetDurationSeconds() int32 {
+	if x != nil {
+		return x.DurationSeconds
+	}
+	return 0
+}
+
+func (x *SearchYouTubeResult) GetThumbnailUrl() string {
+	if x != nil {
+		return x.ThumbnailUrl
+	}
+	return ""
+}
+
+type SearchYouTubeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Results       []*SearchYouTubeResult `protobuf:"bytes,1,rep,name=results,proto3" json:"results,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SearchYouTubeResponse) Reset() {
+	*x = SearchYouTubeResponse{}
+	mi := &file_media_v1_media_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SearchYouTubeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SearchYouTubeResponse) ProtoMessage() {}
+
+func (x *SearchYouTubeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_media_v1_media_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SearchYouTubeResponse.ProtoReflect.Descriptor instead.
+func (*SearchYouTubeResponse) Descriptor() ([]byte, []int) {
+	return file_media_v1_media_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *SearchYouTubeResponse) GetResults() []*SearchYouTubeResult {
+	if x != nil {
+		return x.Results
+	}
+	return nil
+}
+
 var File_media_v1_media_proto protoreflect.FileDescriptor
 
 const file_media_v1_media_proto_rawDesc = "" +
@@ -337,15 +517,28 @@ const file_media_v1_media_proto_rawDesc = "" +
 	"\n" +
 	"stream_url\x18\x01 \x01(\tR\tstreamUrl\x12\x1d\n" +
 	"\n" +
-	"expires_at\x18\x02 \x01(\tR\texpiresAt*v\n" +
+	"expires_at\x18\x02 \x01(\tR\texpiresAt\"n\n" +
+	"\x14SearchYouTubeRequest\x12*\n" +
+	"\x04meta\x18\x01 \x01(\v2\x16.common.v1.RequestMetaR\x04meta\x12\x14\n" +
+	"\x05query\x18\x02 \x01(\tR\x05query\x12\x14\n" +
+	"\x05limit\x18\x03 \x01(\x05R\x05limit\"\xb0\x01\n" +
+	"\x13SearchYouTubeResult\x12\x19\n" +
+	"\bvideo_id\x18\x01 \x01(\tR\avideoId\x12\x14\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\x12\x18\n" +
+	"\achannel\x18\x03 \x01(\tR\achannel\x12)\n" +
+	"\x10duration_seconds\x18\x04 \x01(\x05R\x0fdurationSeconds\x12#\n" +
+	"\rthumbnail_url\x18\x05 \x01(\tR\fthumbnailUrl\"P\n" +
+	"\x15SearchYouTubeResponse\x127\n" +
+	"\aresults\x18\x01 \x03(\v2\x1d.media.v1.SearchYouTubeResultR\aresults*v\n" +
 	"\fAudioQuality\x12\x1d\n" +
 	"\x19AUDIO_QUALITY_UNSPECIFIED\x10\x00\x12\x15\n" +
 	"\x11AUDIO_QUALITY_LOW\x10\x01\x12\x18\n" +
 	"\x14AUDIO_QUALITY_MEDIUM\x10\x02\x12\x16\n" +
-	"\x12AUDIO_QUALITY_HIGH\x10\x032\xac\x01\n" +
+	"\x12AUDIO_QUALITY_HIGH\x10\x032\xfe\x01\n" +
 	"\fMediaService\x12M\n" +
 	"\fGetMediaInfo\x12\x1d.media.v1.GetMediaInfoRequest\x1a\x1e.media.v1.GetMediaInfoResponse\x12M\n" +
-	"\fGetStreamUrl\x12\x1d.media.v1.GetStreamUrlRequest\x1a\x1e.media.v1.GetStreamUrlResponseB*Z(listenly-backend/gen/go/media/v1;mediav1b\x06proto3"
+	"\fGetStreamUrl\x12\x1d.media.v1.GetStreamUrlRequest\x1a\x1e.media.v1.GetStreamUrlResponse\x12P\n" +
+	"\rSearchYouTube\x12\x1e.media.v1.SearchYouTubeRequest\x1a\x1f.media.v1.SearchYouTubeResponseB*Z(listenly-backend/gen/go/media/v1;mediav1b\x06proto3"
 
 var (
 	file_media_v1_media_proto_rawDescOnce sync.Once
@@ -360,28 +553,35 @@ func file_media_v1_media_proto_rawDescGZIP() []byte {
 }
 
 var file_media_v1_media_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_media_v1_media_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_media_v1_media_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_media_v1_media_proto_goTypes = []any{
-	(AudioQuality)(0),            // 0: media.v1.AudioQuality
-	(*GetMediaInfoRequest)(nil),  // 1: media.v1.GetMediaInfoRequest
-	(*GetMediaInfoResponse)(nil), // 2: media.v1.GetMediaInfoResponse
-	(*GetStreamUrlRequest)(nil),  // 3: media.v1.GetStreamUrlRequest
-	(*GetStreamUrlResponse)(nil), // 4: media.v1.GetStreamUrlResponse
-	(*v1.RequestMeta)(nil),       // 5: common.v1.RequestMeta
+	(AudioQuality)(0),             // 0: media.v1.AudioQuality
+	(*GetMediaInfoRequest)(nil),   // 1: media.v1.GetMediaInfoRequest
+	(*GetMediaInfoResponse)(nil),  // 2: media.v1.GetMediaInfoResponse
+	(*GetStreamUrlRequest)(nil),   // 3: media.v1.GetStreamUrlRequest
+	(*GetStreamUrlResponse)(nil),  // 4: media.v1.GetStreamUrlResponse
+	(*SearchYouTubeRequest)(nil),  // 5: media.v1.SearchYouTubeRequest
+	(*SearchYouTubeResult)(nil),   // 6: media.v1.SearchYouTubeResult
+	(*SearchYouTubeResponse)(nil), // 7: media.v1.SearchYouTubeResponse
+	(*v1.RequestMeta)(nil),        // 8: common.v1.RequestMeta
 }
 var file_media_v1_media_proto_depIdxs = []int32{
-	5, // 0: media.v1.GetMediaInfoRequest.meta:type_name -> common.v1.RequestMeta
-	5, // 1: media.v1.GetStreamUrlRequest.meta:type_name -> common.v1.RequestMeta
+	8, // 0: media.v1.GetMediaInfoRequest.meta:type_name -> common.v1.RequestMeta
+	8, // 1: media.v1.GetStreamUrlRequest.meta:type_name -> common.v1.RequestMeta
 	0, // 2: media.v1.GetStreamUrlRequest.quality:type_name -> media.v1.AudioQuality
-	1, // 3: media.v1.MediaService.GetMediaInfo:input_type -> media.v1.GetMediaInfoRequest
-	3, // 4: media.v1.MediaService.GetStreamUrl:input_type -> media.v1.GetStreamUrlRequest
-	2, // 5: media.v1.MediaService.GetMediaInfo:output_type -> media.v1.GetMediaInfoResponse
-	4, // 6: media.v1.MediaService.GetStreamUrl:output_type -> media.v1.GetStreamUrlResponse
-	5, // [5:7] is the sub-list for method output_type
-	3, // [3:5] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	8, // 3: media.v1.SearchYouTubeRequest.meta:type_name -> common.v1.RequestMeta
+	6, // 4: media.v1.SearchYouTubeResponse.results:type_name -> media.v1.SearchYouTubeResult
+	1, // 5: media.v1.MediaService.GetMediaInfo:input_type -> media.v1.GetMediaInfoRequest
+	3, // 6: media.v1.MediaService.GetStreamUrl:input_type -> media.v1.GetStreamUrlRequest
+	5, // 7: media.v1.MediaService.SearchYouTube:input_type -> media.v1.SearchYouTubeRequest
+	2, // 8: media.v1.MediaService.GetMediaInfo:output_type -> media.v1.GetMediaInfoResponse
+	4, // 9: media.v1.MediaService.GetStreamUrl:output_type -> media.v1.GetStreamUrlResponse
+	7, // 10: media.v1.MediaService.SearchYouTube:output_type -> media.v1.SearchYouTubeResponse
+	8, // [8:11] is the sub-list for method output_type
+	5, // [5:8] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_media_v1_media_proto_init() }
@@ -395,7 +595,7 @@ func file_media_v1_media_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_media_v1_media_proto_rawDesc), len(file_media_v1_media_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   4,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -76,3 +76,40 @@ def get_audio_stream_url(video_id: str, quality: AudioQuality = AudioQuality.MED
         raise MediaExtractionError(f"URL video tidak valid atau tidak tersedia: {e}")
     except Exception as e:
         raise MediaExtractionError(f"Terjadi kesalahan: {e}")
+
+def search_youtube(query: str, limit: int = 10) -> list[dict]:
+    """
+    Cari video di YouTube via yt-dlp (ytsearch) TANPA download.
+    Kembalikan daftar kandidat ringan untuk ditampilkan ke user.
+    """
+    if limit < 1 or limit > 50:
+        limit = 10
+
+    ydl_opts = {
+        "quiet": True,
+        "no_warnings": True,
+        "noplaylist": True,
+        "extract_flat": True,  # cepat: tidak resolve tiap video penuh, cukup metadata ringkas
+        "skip_download": True,
+    }
+    try:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(f"ytsearch{limit}:{query}", download=False)
+    except Exception as e:
+        raise MediaExtractionError(f"Gagal mencari di YouTube: {e}")
+
+    entries = info.get("entries") or []
+    results = []
+    for entry in entries:
+        if not entry:
+            continue
+        video_id = entry.get("id") or ""
+        results.append({
+            "video_id": video_id,
+            "title": entry.get("title") or "",
+            "channel": entry.get("channel") or entry.get("uploader") or "",
+            "duration_seconds": int(entry.get("duration") or 0),
+            "thumbnail_url": entry.get("thumbnail")
+            or (f"https://i.ytimg.com/vi/{video_id}/hqdefault.jpg" if video_id else ""),
+        })
+    return results

@@ -25,7 +25,7 @@ _sym_db = _symbol_database.Default()
 from common.v1 import common_pb2 as common_dot_v1_dot_common__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14media/v1/media.proto\x12\x08media.v1\x1a\x16\x63ommon/v1/common.proto\"b\n\x13GetMediaInfoRequest\x12*\n\x04meta\x18\x01 \x01(\x0b\x32\x16.common.v1.RequestMetaR\x04meta\x12\x1f\n\x0byoutube_url\x18\x02 \x01(\tR\nyoutubeUrl\"\xb1\x01\n\x14GetMediaInfoResponse\x12\x19\n\x08video_id\x18\x01 \x01(\tR\x07videoId\x12\x14\n\x05title\x18\x02 \x01(\tR\x05title\x12\x18\n\x07\x63hannel\x18\x03 \x01(\tR\x07\x63hannel\x12)\n\x10\x64uration_seconds\x18\x04 \x01(\x05R\x0f\x64urationSeconds\x12#\n\rthumbnail_url\x18\x05 \x01(\tR\x0cthumbnailUrl\"\x8e\x01\n\x13GetStreamUrlRequest\x12*\n\x04meta\x18\x01 \x01(\x0b\x32\x16.common.v1.RequestMetaR\x04meta\x12\x19\n\x08video_id\x18\x02 \x01(\tR\x07videoId\x12\x30\n\x07quality\x18\x03 \x01(\x0e\x32\x16.media.v1.AudioQualityR\x07quality\"T\n\x14GetStreamUrlResponse\x12\x1d\n\nstream_url\x18\x01 \x01(\tR\tstreamUrl\x12\x1d\n\nexpires_at\x18\x02 \x01(\tR\texpiresAt*v\n\x0c\x41udioQuality\x12\x1d\n\x19\x41UDIO_QUALITY_UNSPECIFIED\x10\x00\x12\x15\n\x11\x41UDIO_QUALITY_LOW\x10\x01\x12\x18\n\x14\x41UDIO_QUALITY_MEDIUM\x10\x02\x12\x16\n\x12\x41UDIO_QUALITY_HIGH\x10\x03\x32\xac\x01\n\x0cMediaService\x12M\n\x0cGetMediaInfo\x12\x1d.media.v1.GetMediaInfoRequest\x1a\x1e.media.v1.GetMediaInfoResponse\x12M\n\x0cGetStreamUrl\x12\x1d.media.v1.GetStreamUrlRequest\x1a\x1e.media.v1.GetStreamUrlResponseB*Z(listenly-backend/gen/go/media/v1;mediav1b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14media/v1/media.proto\x12\x08media.v1\x1a\x16\x63ommon/v1/common.proto\"b\n\x13GetMediaInfoRequest\x12*\n\x04meta\x18\x01 \x01(\x0b\x32\x16.common.v1.RequestMetaR\x04meta\x12\x1f\n\x0byoutube_url\x18\x02 \x01(\tR\nyoutubeUrl\"\xb1\x01\n\x14GetMediaInfoResponse\x12\x19\n\x08video_id\x18\x01 \x01(\tR\x07videoId\x12\x14\n\x05title\x18\x02 \x01(\tR\x05title\x12\x18\n\x07\x63hannel\x18\x03 \x01(\tR\x07\x63hannel\x12)\n\x10\x64uration_seconds\x18\x04 \x01(\x05R\x0f\x64urationSeconds\x12#\n\rthumbnail_url\x18\x05 \x01(\tR\x0cthumbnailUrl\"\x8e\x01\n\x13GetStreamUrlRequest\x12*\n\x04meta\x18\x01 \x01(\x0b\x32\x16.common.v1.RequestMetaR\x04meta\x12\x19\n\x08video_id\x18\x02 \x01(\tR\x07videoId\x12\x30\n\x07quality\x18\x03 \x01(\x0e\x32\x16.media.v1.AudioQualityR\x07quality\"T\n\x14GetStreamUrlResponse\x12\x1d\n\nstream_url\x18\x01 \x01(\tR\tstreamUrl\x12\x1d\n\nexpires_at\x18\x02 \x01(\tR\texpiresAt\"n\n\x14SearchYouTubeRequest\x12*\n\x04meta\x18\x01 \x01(\x0b\x32\x16.common.v1.RequestMetaR\x04meta\x12\x14\n\x05query\x18\x02 \x01(\tR\x05query\x12\x14\n\x05limit\x18\x03 \x01(\x05R\x05limit\"\xb0\x01\n\x13SearchYouTubeResult\x12\x19\n\x08video_id\x18\x01 \x01(\tR\x07videoId\x12\x14\n\x05title\x18\x02 \x01(\tR\x05title\x12\x18\n\x07\x63hannel\x18\x03 \x01(\tR\x07\x63hannel\x12)\n\x10\x64uration_seconds\x18\x04 \x01(\x05R\x0f\x64urationSeconds\x12#\n\rthumbnail_url\x18\x05 \x01(\tR\x0cthumbnailUrl\"P\n\x15SearchYouTubeResponse\x12\x37\n\x07results\x18\x01 \x03(\x0b\x32\x1d.media.v1.SearchYouTubeResultR\x07results*v\n\x0c\x41udioQuality\x12\x1d\n\x19\x41UDIO_QUALITY_UNSPECIFIED\x10\x00\x12\x15\n\x11\x41UDIO_QUALITY_LOW\x10\x01\x12\x18\n\x14\x41UDIO_QUALITY_MEDIUM\x10\x02\x12\x16\n\x12\x41UDIO_QUALITY_HIGH\x10\x03\x32\xfe\x01\n\x0cMediaService\x12M\n\x0cGetMediaInfo\x12\x1d.media.v1.GetMediaInfoRequest\x1a\x1e.media.v1.GetMediaInfoResponse\x12M\n\x0cGetStreamUrl\x12\x1d.media.v1.GetStreamUrlRequest\x1a\x1e.media.v1.GetStreamUrlResponse\x12P\n\rSearchYouTube\x12\x1e.media.v1.SearchYouTubeRequest\x1a\x1f.media.v1.SearchYouTubeResponseB*Z(listenly-backend/gen/go/media/v1;mediav1b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -33,8 +33,8 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'media.v1.media_pb2', _globa
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'Z(listenly-backend/gen/go/media/v1;mediav1'
-  _globals['_AUDIOQUALITY']._serialized_start=569
-  _globals['_AUDIOQUALITY']._serialized_end=687
+  _globals['_AUDIOQUALITY']._serialized_start=942
+  _globals['_AUDIOQUALITY']._serialized_end=1060
   _globals['_GETMEDIAINFOREQUEST']._serialized_start=58
   _globals['_GETMEDIAINFOREQUEST']._serialized_end=156
   _globals['_GETMEDIAINFORESPONSE']._serialized_start=159
@@ -43,6 +43,12 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_GETSTREAMURLREQUEST']._serialized_end=481
   _globals['_GETSTREAMURLRESPONSE']._serialized_start=483
   _globals['_GETSTREAMURLRESPONSE']._serialized_end=567
-  _globals['_MEDIASERVICE']._serialized_start=690
-  _globals['_MEDIASERVICE']._serialized_end=862
+  _globals['_SEARCHYOUTUBEREQUEST']._serialized_start=569
+  _globals['_SEARCHYOUTUBEREQUEST']._serialized_end=679
+  _globals['_SEARCHYOUTUBERESULT']._serialized_start=682
+  _globals['_SEARCHYOUTUBERESULT']._serialized_end=858
+  _globals['_SEARCHYOUTUBERESPONSE']._serialized_start=860
+  _globals['_SEARCHYOUTUBERESPONSE']._serialized_end=940
+  _globals['_MEDIASERVICE']._serialized_start=1063
+  _globals['_MEDIASERVICE']._serialized_end=1317
 # @@protoc_insertion_point(module_scope)

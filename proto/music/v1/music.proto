@@ -13,6 +13,9 @@ service MusicService {
   rpc GetQueue(GetQueueRequest) returns (GetQueueResponse);
   rpc RemoveFromQueue(RemoveFromQueueRequest) returns (RemoveFromQueueResponse);
   rpc MarkAsPlayed(MarkAsPlayedRequest) returns (MarkAsPlayedResponse);
+  rpc GetStreamURL(GetStreamURLRequest) returns (GetStreamURLResponse);
+  rpc SearchYouTube(SearchYouTubeRequest) returns (SearchYouTubeResponse);
+  rpc AdvanceQueue(AdvanceQueueRequest) returns (AdvanceQueueResponse);
 }
 
 message SearchTracksRequest {
@@ -84,4 +87,44 @@ message MarkAsPlayedRequest {
 
 message MarkAsPlayedResponse {
   bool success = 1;
+}
+
+message GetStreamURLRequest {
+  common.v1.RequestMeta meta = 1;
+  string track_uuid = 2;
+}
+
+message GetStreamURLResponse {
+  string stream_url = 1;
+  string expires_at = 2;
+}
+
+message SearchYouTubeRequest {
+  common.v1.RequestMeta meta = 1;
+  string query = 2;
+  int32 limit = 3;
+}
+
+message YouTubeTrackResult {
+  string youtube_video_id = 1;
+  string title = 2;
+  string channel = 3;
+  int32 duration_seconds = 4;
+  string thumbnail_url = 5;
+}
+
+message SearchYouTubeResponse {
+  repeated YouTubeTrackResult results = 1;
+}
+
+message AdvanceQueueRequest {
+  common.v1.RequestMeta meta = 1;
+  string room_uuid = 2;
+  string requester_uuid = 3;
+  string current_queue_item_uuid = 4; // yang baru selesai; boleh kosong kalau tak ada
+}
+
+message AdvanceQueueResponse {
+  bool has_next = 1;
+  QueueItemResponse next_item = 2; // valid hanya jika has_next = true
 }

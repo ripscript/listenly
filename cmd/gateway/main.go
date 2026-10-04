@@ -9,7 +9,9 @@ import (
 	"listenly-backend/config"
 	"listenly-backend/internal/gateway/handler"
 	"listenly-backend/internal/gateway/middleware"
+	"listenly-backend/internal/gateway/ws"
 	"listenly-backend/pkg/grpcclient"
+	"listenly-backend/pkg/rabbitmq"
 	"listenly-backend/pkg/validator"
 )
 
@@ -34,6 +36,23 @@ func main() {
 		return
 	}
 
+	// --- WebSocket realtime ---
+	hub := ws.NewHub()
+
+	consumer, err := rabbitmq.NewConsumer(cfg.RabbitMQURL, []string{"room.*.playback", "room.*.queue"})
+	if err != nil {
+		slog.Error("failed to connect rabbitmq consumer", "error", err)
+		return
+	}
+	defer consumer.Close()
+
+	if err := ws.StartDispatcher(hub, consumer); err != nil {
+		slog.Error("failed to start ws dispatcher", "error", err)
+		return
+	}
+
+	wsHandler := ws.NewHandler(hub, authClient)
+
 	authHandler := handler.NewAuthHandler(authClient)
 	roomHandler := handler.NewRoomHandler(roomClient, cfg.WebBaseURL)
 	musicHandler := handler.NewMusicHandler(musicClient)
@@ -52,6 +71,9 @@ func main() {
 	api := e.Group("/api")
 
 	v1 := api.Group("/v1")
+
+	v1.GET("/rooms/:uuid/ws", wsHandler.Connect)
+
 	authGroup := v1.Group("/auth")
 	authGroup.POST("/register", authHandler.Register)
 	authGroup.POST("/login", authHandler.Login)
@@ -80,6 +102,9 @@ func main() {
 	musicGroup.DELETE("/queue/:uuid", musicHandler.RemoveFromQueue)
 	musicGroup.PATCH("/queue/:uuid/played", musicHandler.MarkAsPlayed)
 	musicGroup.GET("/tracks/:uuid", musicHandler.GetTrack)
+	musicGroup.GET("/tracks/:uuid/stream", musicHandler.GetStreamURL)
+	musicGroup.GET("/youtube/search", musicHandler.SearchYouTube)
+	musicGroup.POST("/rooms/:roomUuid/queue/advance", musicHandler.AdvanceQueue)
 
 	if err := e.Start(":" + cfg.HTTPPort); err != nil {
 		slog.Error("failed to start gateway", "error", err)

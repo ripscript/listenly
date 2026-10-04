@@ -24,6 +24,11 @@ class MediaServiceStub:
                 request_serializer=media_dot_v1_dot_media__pb2.GetStreamUrlRequest.SerializeToString,
                 response_deserializer=media_dot_v1_dot_media__pb2.GetStreamUrlResponse.FromString,
                 _registered_method=True)
+        self.SearchYouTube = channel.unary_unary(
+                '/media.v1.MediaService/SearchYouTube',
+                request_serializer=media_dot_v1_dot_media__pb2.SearchYouTubeRequest.SerializeToString,
+                response_deserializer=media_dot_v1_dot_media__pb2.SearchYouTubeResponse.FromString,
+                _registered_method=True)
 
 
 class MediaServiceServicer:
@@ -41,6 +46,12 @@ class MediaServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SearchYouTube(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_MediaServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -53,6 +64,11 @@ def add_MediaServiceServicer_to_server(servicer, server):
                     servicer.GetStreamUrl,
                     request_deserializer=media_dot_v1_dot_media__pb2.GetStreamUrlRequest.FromString,
                     response_serializer=media_dot_v1_dot_media__pb2.GetStreamUrlResponse.SerializeToString,
+            ),
+            'SearchYouTube': grpc.unary_unary_rpc_method_handler(
+                    servicer.SearchYouTube,
+                    request_deserializer=media_dot_v1_dot_media__pb2.SearchYouTubeRequest.FromString,
+                    response_serializer=media_dot_v1_dot_media__pb2.SearchYouTubeResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -109,6 +125,33 @@ class MediaService:
             '/media.v1.MediaService/GetStreamUrl',
             media_dot_v1_dot_media__pb2.GetStreamUrlRequest.SerializeToString,
             media_dot_v1_dot_media__pb2.GetStreamUrlResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SearchYouTube(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/media.v1.MediaService/SearchYouTube',
+            media_dot_v1_dot_media__pb2.SearchYouTubeRequest.SerializeToString,
+            media_dot_v1_dot_media__pb2.SearchYouTubeResponse.FromString,
             options,
             channel_credentials,
             insecure,

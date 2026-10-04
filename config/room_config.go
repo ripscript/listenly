@@ -8,6 +8,8 @@ type RoomConfig struct {
 	RedisAddr     string
 	RedisPassword string
 	RedisDB       int
+
+	RabbitMQURL string
 }
 
 func LoadRoomConfig() RoomConfig {
@@ -19,5 +21,7 @@ func LoadRoomConfig() RoomConfig {
 		RedisAddr:     getEnv("REDIS_ADDR", "localhost:6379"),
 		RedisPassword: getEnv("REDIS_PASSWORD", ""),
 		RedisDB:       0,
+
+		RabbitMQURL: getEnv("RABBITMQ_URL", "amqp://admin:admin123@localhost:5672/"),
 	}
 }

@@ -15,6 +15,7 @@ import (
 	"listenly-backend/pkg/database"
 	"listenly-backend/pkg/grpcclient"
 	"listenly-backend/pkg/grpcserver"
+	"listenly-backend/pkg/rabbitmq"
 	"listenly-backend/pkg/redis"
 )
 
@@ -34,6 +35,13 @@ func main() {
 		return
 	}
 
+	publisher, err := rabbitmq.NewPublisher(cfg.RabbitMQURL)
+	if err != nil {
+		slog.Error("failed to connect rabbitmq", "error", err)
+		return
+	}
+	defer publisher.Close()
+
 	authClient, err := grpcclient.NewAuthServiceClient(cfg.AuthServiceAddr)
 	if err != nil {
 		slog.Error("failed to connect auth-service", "error", err)
@@ -42,7 +50,8 @@ func main() {
 
 	roomRepo := repository.NewRoomRepository(db)
 	roomStateRepo := repository.NewRoomStateRepository(rdb)
-	roomSvc := service.NewRoomService(roomRepo, roomStateRepo, authClient)
+	roomSvc := service.NewRoomService(roomRepo, roomStateRepo, authClient, publisher)
+
 	roomHandler := handler.NewRoomGRPCHandler(roomSvc)
 
 	lis, err := net.Listen("tcp", ":"+cfg.GRPCPort)

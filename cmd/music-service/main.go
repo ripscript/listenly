@@ -17,6 +17,7 @@ import (
 	"listenly-backend/pkg/elastic"
 	"listenly-backend/pkg/grpcclient"
 	"listenly-backend/pkg/grpcserver"
+	"listenly-backend/pkg/rabbitmq"
 )
 
 func main() {
@@ -53,6 +54,13 @@ func main() {
 		return
 	}
 
+	publisher, err := rabbitmq.NewPublisher(cfg.RabbitMQURL)
+	if err != nil {
+		slog.Error("failed to connect rabbitmq", "error", err)
+		return
+	}
+	defer publisher.Close()
+
 	musicRepo := repository.NewMusicRepository(db)
 	trackSearchRepo := repository.NewTrackSearchRepository(esClient)
 
@@ -63,7 +71,7 @@ func main() {
 		slog.Info("reindexed tracks on startup", "count", count)
 	}
 
-	musicSvc := service.NewMusicService(musicRepo, trackSearchRepo, authClient, roomClient, mediaClient)
+	musicSvc := service.NewMusicService(musicRepo, trackSearchRepo, authClient, roomClient, mediaClient, publisher)
 	musicHandler := handler.NewMusicGRPCHandler(musicSvc)
 
 	lis, err := net.Listen("tcp", ":"+cfg.GRPCPort)

@@ -8,6 +8,7 @@ from media.v1 import media_pb2, media_pb2_grpc
 from media_extractor import (
     get_media_info,
     get_audio_stream_url,
+    search_youtube,
     AUDIO_QUALITY_MAP,
     MediaExtractionError,
 )
@@ -45,6 +46,27 @@ class MediaServiceServicer(media_pb2_grpc.MediaServiceServicer):
         return media_pb2.GetStreamUrlResponse(
             stream_url=stream_url,
             expires_at=expires_at,
+        )
+
+    def SearchYouTube(self, request, context):
+        try:
+            results = search_youtube(request.query, request.limit or 10)
+        except MediaExtractionError as e:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details(str(e))
+            return media_pb2.SearchYouTubeResponse()
+
+        return media_pb2.SearchYouTubeResponse(
+            results=[
+                media_pb2.SearchYouTubeResult(
+                    video_id=r["video_id"],
+                    title=r["title"],
+                    channel=r["channel"],
+                    duration_seconds=r["duration_seconds"],
+                    thumbnail_url=r["thumbnail_url"],
+                )
+                for r in results
+            ]
         )
 
 

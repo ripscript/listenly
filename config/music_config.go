@@ -7,6 +7,7 @@ type MusicConfig struct {
 	RoomServiceAddr  string
 	MediaServiceAddr string
 	ElasticsearchURL string
+	RabbitMQURL      string
 }
 
 func LoadMusicConfig() MusicConfig {
@@ -17,5 +18,6 @@ func LoadMusicConfig() MusicConfig {
 		RoomServiceAddr:  getEnv("ROOM_SERVICE_ADDR", "localhost:50052"),
 		MediaServiceAddr: getEnv("MEDIA_SERVICE_ADDR", "localhost:50054"),
 		ElasticsearchURL: getEnv("ELASTICSEARCH_URL", "http://localhost:9200"),
+		RabbitMQURL:      getEnv("RABBITMQ_URL", "amqp://admin:admin123@localhost:5672/"),
 	}
 }

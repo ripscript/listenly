@@ -25,6 +25,7 @@ type MusicRepository interface {
 	DeleteQueueItem(ctx context.Context, id int64) error
 	UpdateQueueItemStatus(ctx context.Context, id int64, status string) error
 	FindTracksByUUIDs(ctx context.Context, uuids []string) ([]models.Track, error)
+	FindNextReadyInRoom(ctx context.Context, roomID int64) (*models.QueueItem, error)
 }
 
 type musicRepository struct {
@@ -131,4 +132,16 @@ func (r *musicRepository) FindTracksByUUIDs(ctx context.Context, uuids []string)
 	var tracks []models.Track
 	err := r.db.WithContext(ctx).Where("uuid IN ?", uuids).Find(&tracks).Error
 	return tracks, err
+}
+
+func (r *musicRepository) FindNextReadyInRoom(ctx context.Context, roomID int64) (*models.QueueItem, error) {
+	var item models.QueueItem
+	err := r.db.WithContext(ctx).Preload("Track").
+		Where("room_id = ? AND status = ?", roomID, models.StatusReady).
+		Order("position ASC").
+		First(&item).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, ErrNotFound
+	}
+	return &item, err
 }

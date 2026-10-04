@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"log/slog"
+	"time"
 
 	authv1 "listenly-backend/gen/go/auth/v1"
 	mediav1 "listenly-backend/gen/go/media/v1"
@@ -11,6 +12,7 @@ import (
 	"listenly-backend/internal/music/dto"
 	"listenly-backend/internal/music/models"
 	"listenly-backend/internal/music/repository"
+	"listenly-backend/pkg/rabbitmq"
 )
 
 var (
@@ -27,6 +29,13 @@ type MusicService interface {
 	GetQueue(ctx context.Context, roomUUID, requesterUUID string) ([]dto.QueueItemResponse, error)
 	RemoveFromQueue(ctx context.Context, req dto.RemoveFromQueueRequest) error
 	MarkAsPlayed(ctx context.Context, queueItemUUID string) error
+	GetStreamURL(ctx context.Context, trackUUID string) (*dto.StreamURLResponse, error)
+	SearchYouTube(ctx context.Context, query string, limit int) ([]dto.YouTubeTrackResult, error)
+	AdvanceQueue(ctx context.Context, req dto.AdvanceQueueRequest) (*dto.QueueItemResponse, error)
+}
+
+type EventPublisher interface {
+	Publish(ctx context.Context, routingKey string, payload any) error
 }
 
 type musicService struct {
@@ -35,6 +44,7 @@ type musicService struct {
 	authClient  authv1.AuthServiceClient
 	roomClient  roomv1.RoomServiceClient
 	mediaClient mediav1.MediaServiceClient
+	publisher   EventPublisher
 }
 
 var ErrNotRoomMember = errors.New("you are not a member of this room")
@@ -45,6 +55,7 @@ func NewMusicService(
 	authClient authv1.AuthServiceClient,
 	roomClient roomv1.RoomServiceClient,
 	mediaClient mediav1.MediaServiceClient,
+	publisher EventPublisher,
 ) MusicService {
 	return &musicService{
 		repo:        repo,
@@ -52,6 +63,7 @@ func NewMusicService(
 		authClient:  authClient,
 		roomClient:  roomClient,
 		mediaClient: mediaClient,
+		publisher:   publisher,
 	}
 }
 
@@ -151,6 +163,7 @@ func (s *musicService) RequestTrack(ctx context.Context, req dto.RequestTrackReq
 
 	item.Track = *track
 	resp := toQueueItemResponse(item, req.RequestedByUUID)
+	s.publishQueueEvent(ctx, req.RoomUUID, "track_requested")
 	return &resp, nil
 }
 
@@ -209,6 +222,26 @@ func (s *musicService) MarkAsPlayed(ctx context.Context, queueItemUUID string) e
 	return s.repo.UpdateQueueItemStatus(ctx, item.ID, models.StatusPlayed)
 }
 
+func (s *musicService) GetStreamURL(ctx context.Context, trackUUID string) (*dto.StreamURLResponse, error) {
+	track, err := s.repo.FindTrackByUUID(ctx, mustParseUUID(trackUUID))
+	if err != nil {
+		return nil, ErrTrackNotFound
+	}
+
+	resp, err := s.mediaClient.GetStreamUrl(ctx, &mediav1.GetStreamUrlRequest{
+		VideoId: track.YoutubeVideoID,
+		Quality: mediav1.AudioQuality_AUDIO_QUALITY_MEDIUM,
+	})
+	if err != nil {
+		return nil, errors.New("failed to get stream url: media may be unavailable")
+	}
+
+	return &dto.StreamURLResponse{
+		StreamURL: resp.StreamUrl,
+		ExpiresAt: resp.ExpiresAt,
+	}, nil
+}
+
 func toTrackResponse(t *models.Track) dto.TrackResponse {
 	return dto.TrackResponse{
 		UUID:            t.UUID.String(),
@@ -258,4 +291,77 @@ func (s *musicService) fetchAndCreateTrack(ctx context.Context, youtubeVideoID s
 	}
 
 	return track, nil
+}
+
+func (s *musicService) SearchYouTube(ctx context.Context, query string, limit int) ([]dto.YouTubeTrackResult, error) {
+	resp, err := s.mediaClient.SearchYouTube(ctx, &mediav1.SearchYouTubeRequest{
+		Query: query,
+		Limit: int32(limit),
+	})
+	if err != nil {
+		return nil, errors.New("failed to search youtube")
+	}
+
+	results := make([]dto.YouTubeTrackResult, 0, len(resp.Results))
+	for _, r := range resp.Results {
+		results = append(results, dto.YouTubeTrackResult{
+			YoutubeVideoID:  r.VideoId,
+			Title:           r.Title,
+			Channel:         r.Channel,
+			DurationSeconds: int(r.DurationSeconds),
+			ThumbnailURL:    r.ThumbnailUrl,
+		})
+	}
+	return results, nil
+}
+
+func (s *musicService) AdvanceQueue(ctx context.Context, req dto.AdvanceQueueRequest) (*dto.QueueItemResponse, error) {
+	// validasi room + requester harus host
+	roomInternal, err := s.roomClient.GetRoomInternal(ctx, &roomv1.GetRoomInternalRequest{RoomUuid: req.RoomUUID})
+	if err != nil {
+		return nil, errors.New("room not found")
+	}
+
+	membership, err := s.roomClient.CheckMembership(ctx, &roomv1.CheckMembershipRequest{
+		RoomUuid: req.RoomUUID,
+		UserUuid: req.RequesterUUID,
+	})
+	if err != nil || !membership.IsMember {
+		return nil, ErrNotRoomMember
+	}
+	if !membership.IsHost {
+		return nil, ErrNotAuthorized
+	}
+
+	// tandai lagu yang baru selesai sebagai played (kalau ada)
+	if req.CurrentQueueItemUUID != "" {
+		if cur, err := s.repo.FindQueueItemByUUID(ctx, mustParseUUID(req.CurrentQueueItemUUID)); err == nil {
+			_ = s.repo.UpdateQueueItemStatus(ctx, cur.ID, models.StatusPlayed)
+		}
+	}
+
+	s.publishQueueEvent(ctx, req.RoomUUID, "queue_advanced")
+
+	// cari lagu berikutnya yang masih ready
+	next, err := s.repo.FindNextReadyInRoom(ctx, roomInternal.Id)
+	if err != nil {
+		if errors.Is(err, repository.ErrNotFound) {
+			return nil, nil // queue habis — bukan error
+		}
+		return nil, err
+	}
+
+	resp := toQueueItemResponse(next, "")
+	return &resp, nil
+}
+
+func (s *musicService) publishQueueEvent(ctx context.Context, roomUUID, action string) {
+	_ = s.publisher.Publish(ctx, rabbitmq.RoomQueueKey(roomUUID), rabbitmq.Event{
+		Type:     rabbitmq.EventQueueUpdated,
+		RoomUUID: roomUUID,
+		Payload: map[string]string{
+			"action": action, // "track_requested" | "track_removed" | "queue_advanced"
+		},
+		Timestamp: time.Now(),
+	})
 }

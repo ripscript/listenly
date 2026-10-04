@@ -25,6 +25,9 @@ const (
 	MusicService_GetQueue_FullMethodName        = "/music.v1.MusicService/GetQueue"
 	MusicService_RemoveFromQueue_FullMethodName = "/music.v1.MusicService/RemoveFromQueue"
 	MusicService_MarkAsPlayed_FullMethodName    = "/music.v1.MusicService/MarkAsPlayed"
+	MusicService_GetStreamURL_FullMethodName    = "/music.v1.MusicService/GetStreamURL"
+	MusicService_SearchYouTube_FullMethodName   = "/music.v1.MusicService/SearchYouTube"
+	MusicService_AdvanceQueue_FullMethodName    = "/music.v1.MusicService/AdvanceQueue"
 )
 
 // MusicServiceClient is the client API for MusicService service.
@@ -37,6 +40,9 @@ type MusicServiceClient interface {
 	GetQueue(ctx context.Context, in *GetQueueRequest, opts ...grpc.CallOption) (*GetQueueResponse, error)
 	RemoveFromQueue(ctx context.Context, in *RemoveFromQueueRequest, opts ...grpc.CallOption) (*RemoveFromQueueResponse, error)
 	MarkAsPlayed(ctx context.Context, in *MarkAsPlayedRequest, opts ...grpc.CallOption) (*MarkAsPlayedResponse, error)
+	GetStreamURL(ctx context.Context, in *GetStreamURLRequest, opts ...grpc.CallOption) (*GetStreamURLResponse, error)
+	SearchYouTube(ctx context.Context, in *SearchYouTubeRequest, opts ...grpc.CallOption) (*SearchYouTubeResponse, error)
+	AdvanceQueue(ctx context.Context, in *AdvanceQueueRequest, opts ...grpc.CallOption) (*AdvanceQueueResponse, error)
 }
 
 type musicServiceClient struct {
@@ -107,6 +113,36 @@ func (c *musicServiceClient) MarkAsPlayed(ctx context.Context, in *MarkAsPlayedR
 	return out, nil
 }
 
+func (c *musicServiceClient) GetStreamURL(ctx context.Context, in *GetStreamURLRequest, opts ...grpc.CallOption) (*GetStreamURLResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetStreamURLResponse)
+	err := c.cc.Invoke(ctx, MusicService_GetStreamURL_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *musicServiceClient) SearchYouTube(ctx context.Context, in *SearchYouTubeRequest, opts ...grpc.CallOption) (*SearchYouTubeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SearchYouTubeResponse)
+	err := c.cc.Invoke(ctx, MusicService_SearchYouTube_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *musicServiceClient) AdvanceQueue(ctx context.Context, in *AdvanceQueueRequest, opts ...grpc.CallOption) (*AdvanceQueueResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AdvanceQueueResponse)
+	err := c.cc.Invoke(ctx, MusicService_AdvanceQueue_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MusicServiceServer is the server API for MusicService service.
 // All implementations must embed UnimplementedMusicServiceServer
 // for forward compatibility.
@@ -117,6 +153,9 @@ type MusicServiceServer interface {
 	GetQueue(context.Context, *GetQueueRequest) (*GetQueueResponse, error)
 	RemoveFromQueue(context.Context, *RemoveFromQueueRequest) (*RemoveFromQueueResponse, error)
 	MarkAsPlayed(context.Context, *MarkAsPlayedRequest) (*MarkAsPlayedResponse, error)
+	GetStreamURL(context.Context, *GetStreamURLRequest) (*GetStreamURLResponse, error)
+	SearchYouTube(context.Context, *SearchYouTubeRequest) (*SearchYouTubeResponse, error)
+	AdvanceQueue(context.Context, *AdvanceQueueRequest) (*AdvanceQueueResponse, error)
 	mustEmbedUnimplementedMusicServiceServer()
 }
 
@@ -144,6 +183,15 @@ func (UnimplementedMusicServiceServer) RemoveFromQueue(context.Context, *RemoveF
 }
 func (UnimplementedMusicServiceServer) MarkAsPlayed(context.Context, *MarkAsPlayedRequest) (*MarkAsPlayedResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method MarkAsPlayed not implemented")
+}
+func (UnimplementedMusicServiceServer) GetStreamURL(context.Context, *GetStreamURLRequest) (*GetStreamURLResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetStreamURL not implemented")
+}
+func (UnimplementedMusicServiceServer) SearchYouTube(context.Context, *SearchYouTubeRequest) (*SearchYouTubeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SearchYouTube not implemented")
+}
+func (UnimplementedMusicServiceServer) AdvanceQueue(context.Context, *AdvanceQueueRequest) (*AdvanceQueueResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AdvanceQueue not implemented")
 }
 func (UnimplementedMusicServiceServer) mustEmbedUnimplementedMusicServiceServer() {}
 func (UnimplementedMusicServiceServer) testEmbeddedByValue()                      {}
@@ -274,6 +322,60 @@ func _MusicService_MarkAsPlayed_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MusicService_GetStreamURL_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetStreamURLRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MusicServiceServer).GetStreamURL(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MusicService_GetStreamURL_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MusicServiceServer).GetStreamURL(ctx, req.(*GetStreamURLRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MusicService_SearchYouTube_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchYouTubeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MusicServiceServer).SearchYouTube(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MusicService_SearchYouTube_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MusicServiceServer).SearchYouTube(ctx, req.(*SearchYouTubeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MusicService_AdvanceQueue_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AdvanceQueueRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MusicServiceServer).AdvanceQueue(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MusicService_AdvanceQueue_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MusicServiceServer).AdvanceQueue(ctx, req.(*AdvanceQueueRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MusicService_ServiceDesc is the grpc.ServiceDesc for MusicService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -304,6 +406,18 @@ var MusicService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MarkAsPlayed",
 			Handler:    _MusicService_MarkAsPlayed_Handler,
+		},
+		{
+			MethodName: "GetStreamURL",
+			Handler:    _MusicService_GetStreamURL_Handler,
+		},
+		{
+			MethodName: "SearchYouTube",
+			Handler:    _MusicService_SearchYouTube_Handler,
+		},
+		{
+			MethodName: "AdvanceQueue",
+			Handler:    _MusicService_AdvanceQueue_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
